@@ -6,11 +6,14 @@ tags:
   - dynamic library
   - static library
   - translation
+  - framework
 ---
+
+<br/>
 
 애플의 문서인 [Overview of Dynamic Libraries](http://www.google.co.kr)에 대한 번역 입니다.
 
-<br/><br/><br/>
+<br/><br/>
 
 # Overview of Dynamic Libraries
 
