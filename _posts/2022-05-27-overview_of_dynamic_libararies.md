@@ -11,7 +11,7 @@ tags:
 
 <br/>
 
-애플의 문서인 [Overview of Dynamic Libraries](http://www.google.co.kr)에 대한 번역 입니다.
+애플의 문서인 [Overview of Dynamic Libraries](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html#//apple_ref/doc/uid/TP40001873-SW1)에 대한 번역 입니다.
 
 <br/><br/>
 

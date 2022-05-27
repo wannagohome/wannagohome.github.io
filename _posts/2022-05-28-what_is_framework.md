@@ -9,7 +9,7 @@ tags:
 
 <br/>
 
-애플의 문서인 [Overview of Dynamic Libraries](http://www.google.co.kr)에 대한 번역 입니다.
+애플의 문서인 [What is framework?](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPFrameworks/Concepts/WhatAreFrameworks.html#//apple_ref/doc/uid/20002303-BBCEIJFI)에 대한 번역 입니다.
 
 <br/><br/>
 
