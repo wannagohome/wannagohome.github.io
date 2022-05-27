@@ -33,6 +33,7 @@ tags:
 {% include figure image_path="/assets/images/overview_of_dynamic_libararies/app-using-static-libraries.png" %}
 **Figure 1.** App using static libraries
 
+<br/>
 
 Figure 2 shows how implementing some functionality as dynamic libraries instead of as static libraries reduces the memory used by the app after launch.
 
@@ -43,5 +44,7 @@ Figure 2.는 dynamic library가 static library와는 달리 어떻게 앱이 lau
 <!-- ![app-using-static-libraries](../assets/images/overview_of_dynamic_libararies/app-using-dynamic-libraries.png) -->
 {% include figure image_path="/assets/images/overview_of_dynamic_libararies/app-using-dynamic-libraries.png" %}
 **Figure 2.** App using static libraries
+
+<br/>
 
 dynamic libarary를 사용하면 libarary를 동적으로 link하기 때문에 프로그램은 library에 대한 개선으로인한 이점을 얻을 수 있습니다. 앱 개발자가 앱을 다시 컴파일 하지 않고도 앱의 기능을 개선하고 확장할 수 있게되기 때문입니다. OS X의 모든 시스템 library가 dynamic library이기 때문에 OS X앱은 앞서 설명한 이점들을 누릴 수 있습니다.
