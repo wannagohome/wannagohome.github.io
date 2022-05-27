@@ -35,8 +35,6 @@ tags:
 
 <br/>
 
-Figure 2 shows how implementing some functionality as dynamic libraries instead of as static libraries reduces the memory used by the app after launch.
-
 Figure 2.는 dynamic library가 static library와는 달리 어떻게 앱이 launch되고 난 후 메모리 사용량을 줄이면서 기능들을 implement하는지를 보여줍니다.
 
 
