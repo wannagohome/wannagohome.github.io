@@ -29,8 +29,7 @@ tags:
 
 
 
-<!-- ![app-using-static-libraries](../assets/images/overview_of_dynamic_libararies/app-using-static-libraries.png) -->
-{% include figure image_path="/assets/images/overview_of_dynamic_libararies/app-using-static-libraries.png" %}
+![app-using-static-libraries](https://github.com/wannagohome/wannagohome.github.io/blob/b3d8597bf62e8421806b38023282387b65cd8f57/assets/images/overview_of_dynamic_libararies/app-using-static-libraries.png?raw=true)
 **Figure 1.** App using static libraries
 
 <br/>
@@ -39,8 +38,7 @@ Figure 2.는 dynamic library가 static library와는 달리 어떻게 앱이 lau
 
 
 
-<!-- ![app-using-static-libraries](../assets/images/overview_of_dynamic_libararies/app-using-dynamic-libraries.png) -->
-{% include figure image_path="/assets/images/overview_of_dynamic_libararies/app-using-dynamic-libraries.png" %}
+![app-using-dynamic-libraries](https://github.com/wannagohome/wannagohome.github.io/blob/b3d8597bf62e8421806b38023282387b65cd8f57/assets/images/overview_of_dynamic_libararies/app-using-dynamic-libraries.png?raw=true)
 **Figure 2.** App using static libraries
 
 <br/>
