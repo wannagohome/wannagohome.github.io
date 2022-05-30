@@ -102,3 +102,17 @@ iOS가 앱의 main 함수를 실행하기 전에 실행되어야만 하는 코�
 가능하다면 앱이 launching을 끝낸 후, 하지만 작업 결과가 필요해 지기전인 앱 라이프 사이클의 나중 단계로 코드를 이동 시키기 바랍니다. Instruments의 Static Initializer Calls는 앱이 static initializer를 실행하는데 걸리는 시간을 측정해 줍니다.
 
 ![4](https://github.com/wannagohome/wannagohome.github.io/blob/master/assets/images/reducing_your_apps_launch_time/reducing-your-app-s-launch-time-4.png?raw=true)
+
+<br/>
+
+## Move Expensive Tasks Out of Your Application Delegate
+
+많은 자원을 소모하는(비싼) 작업을 뒤로 미루기 위해 초기화 코드들을 검사해보십시요. 시스템은 lauch cycle 동안 필요한 작업을 할 수 있도록 AppDelegate 함수를 호출합니다. 이 함수들은 메인 쓰레드에서 동기적으로 실행되며, lauch cycle은 이 함수가 성공적으로 반활 될 때까지 끝나지 않습니다. 결국 이런 함수에서 당신이 수행하도록 하는 비싼 작업들은 lauch cycle을 늦추게 되는 것입니다.
+
+UIKit은 AppDelegate class(UIApplicationDelegate 프로토콜을 구현하는 클래스)를 초기화하고 `application(\_:willFinishLauchingWithOptions:)`와 `application(\_:didFinishLauchingWithOptions:)`에 메세지를 보냅니다. UIKit은 이 메세지들을 메인 쓰레드 위에서 보내며, 이 메소드들 에서 코드를 싱행하며 보내는 시간은 앱의 launch time을 증가시키게 됩니다. 부디 앱의 첫 화면을 띄우기 위한 필수적인 작업들만 이 메소드에서 수행하고, 나머지는 보다 적당한 시간에 수행되도록 미루시기 바랍니다.
+
+컨텐츠가 리프레시 되는 동안 오래된 컨텐츠를 표시해도 되는 경우, 네트워크 서비스를 이용한 데이터 동기화는 앱이 실행될 때 까지 연기시키는게 좋습니다. 동기화 작업을 비동기 백그라운드 큐로 보내십시요. 네트워크 서비스로 부터 업데이트 사항을 불러오기 위한 백그라운드 테스크를 등록하여 launch time에 데이터를 불러오는 데 필요한 작업량을 줄이십시요.
+
+단순한 앱 lauch가 아닌 앱을 처음 사용할 때는 데이터 저장소나 위치 서비스 같이 뷰가 없는 것들을 초기화 시키십시요. 초기 뷰를 표시하기 뒤한 필수 데이터 만을 불러오기 바랍니다. 앱이 상태를 복원중인지 확인하고 뷰를 복원하는데 필요한 데이터를 준비하십시요. 만약 상태를 복원중인게 아니라면 default한 초기 뷰만을 준비하는게 좋습니다. 예를들어, 여러 이미지 썸네일을 부여주고 유저가 선택한 사진에 대해 구제적인 뷰를 보여주는 사진 캘러리 앱이 있다고 가정해 보겠습니다. 만약 앱이 복원되지 않은 상태에서 lauch 됐다면 처음엔 placeholder 이비지만을 보여주고 실제 이미지 썸네일은 앱의 lauching이 끝난 뒤 부터 채워나가면 됩니다. 그리고 유저가 썸네일을 선택하기 전까지는 원본 이미지를 불러올 필요가 없습니다.
+
+초기 실행시 viable(?)한 앱의 제한된 일부분만 초기화 하십시요. 예를들어, task manager 앱은 앱이 유저의 모든 task정보를 데이터 저장소나 네트워크 서비스로부터 받지 못한 상태이더라도 유저가 task를 생성하고 실행할 수 있도록 할 수 있을것입니다.
