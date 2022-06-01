@@ -45,6 +45,32 @@ published: true
 
 build graph의 각 작업들은 각자의 서명을 가지고 있는데 build system은 이 서명을 과거 빌드와 비교하고 어떤 부분이 새롭게 빌드되어야 하는지 파악하고 변경된 부분의 작업만을 수행하는 것입니다.
 
+
+### Where Do Dependencies Come From?
+
+build process는 결국 여러 작업들을 특정 순서태로 수행하는 일련의 과정입니다. 하지만 이 순서들은 build system이 build graph를 이용해 맞춰주기 때문에  개발자는 이에 대해 신경쓸 필요가 없습니다. 우리가 신경써야 할 것은 의존성입니다. build sytem이 작업을 올바른 순서를 따라 병렬적으로 수행 하도록 해서 멀티코어를 최대한 활용하는 것이지요.
+
+그럼 이런 의존성은 어디서 올까요? (build system은 어디로 부터 의존성에 대한 정보를 얻을까요?)
+
+##### Built in
+![4](https://github.com/wannagohome/wannagohome.github.io/blob/master/assets/images/what_happens_when_xcode_build_start/4.png?raw=true)
+
+특정 작업의 경우 build system에 내장된 정보에서 종속성 정보를 가져옵니다.
+
+##### Target Dependencies 
+타겟 의존성은 말그대로 특정 타겟을 의존하여 내가 빌드하려는 타겟이 빌드되기 전에 먼저 빌드되어야 하는 의존성을 이야기 합니다. 의존성이 있어 먼저 빌드되어야 하지만 Xcode 10 이후 부터는 적용된 build system에서는 의존성 없이 빌드할 수 있는 일부분에 대해서 병렬적인 빌드가 가능합니다.
+이런 타겟 의존성은 명시적 의존성과, 암시적 의존성으로 나뉩니다.
+
+##### Explicit Dependencies
+![5](https://github.com/wannagohome/wannagohome.github.io/blob/master/assets/images/what_happens_when_xcode_build_start/5.png?raw=true)
+
+타겟 의존성을 명시적으로 나타낸 것입니다.
+
+##### Implicit Dependencies
+![6](https://github.com/wannagohome/wannagohome.github.io/blob/master/assets/images/what_happens_when_xcode_build_start/6.png?raw=true)
+
+동일한 프로젝트 혹은 workspace에 있는 타겟의 경우 의존성이 명시되어 있지 않더라도  Xcode가 스스로 필요한 타겟 의존성을 감지할 수 있는데 이것을 암시적 의존성이라 합니다.
+
 <br/><br/>
 
 #### *<u>ref.</u>*
