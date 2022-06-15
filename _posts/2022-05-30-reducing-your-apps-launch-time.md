@@ -1,5 +1,5 @@
 ---
-title: "[doc] Reducing Your App’s Launch Time"
+title: "[doc] iOS App Launch Time 줄이기 대작전"
 categories:
   - Build structure
 tags:
