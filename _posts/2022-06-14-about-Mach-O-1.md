@@ -5,7 +5,7 @@ categories:
 tags:
   - build
   - xcode
-published: false
+published: true
 ---
 
 
