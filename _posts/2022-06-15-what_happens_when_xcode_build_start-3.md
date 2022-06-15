@@ -50,3 +50,8 @@ dynamic library는 executable이 이용할 수 있도록 코드와 데이터 조
 ### Static archive
 Static archive(혹은 static library)는 오브젝트 파일의 모음(collection or archive)일 뿐입니다. .a format은 UNIX에서 더 강력한 format이 나오기 전에 사용되던 archive format입니다. 하지만 당시 컴파일러와 링커가 이 foramt을 native하게 읽을 수 있었기 때문에 계속 사용되고 있을 뿐입니다.
 
+
+<br/><br/>
+
+#### *<u>ref.</u>*
+[Behind the Scenes of the Xcode Build Process](https://developer.apple.com/videos/play/wwdc2018/415)
