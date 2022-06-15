@@ -1,5 +1,5 @@
 ---
-title: "[번역] Overview of Dynamic Libraries"
+title: "[doc] Dynamic Library에 대해 알아보자"
 categories:
   - Build structure
 tags:

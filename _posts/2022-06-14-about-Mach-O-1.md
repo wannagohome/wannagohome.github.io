@@ -1,5 +1,5 @@
 ---
-title: "Mach-O -1"
+title: "[doc] Mach-O에 대해 알아보자 -1"
 categories:
   - Build structure
 tags:

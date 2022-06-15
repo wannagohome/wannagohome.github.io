@@ -1,5 +1,5 @@
 ---
-title: "[번역] What is framework?"
+title: "[doc] framework란 무엇일까?"
 categories:
   - Build structure
 tags:

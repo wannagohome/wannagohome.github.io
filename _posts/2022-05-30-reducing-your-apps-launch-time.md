@@ -1,5 +1,5 @@
 ---
-title: "[번역] Reducing Your App’s Launch Time"
+title: "[doc] Reducing Your App’s Launch Time"
 categories:
   - Build structure
 tags:
