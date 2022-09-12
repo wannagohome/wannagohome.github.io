@@ -97,6 +97,3 @@ async와 await의 사용법을 간단하게 짚어보았습니다. 다음에는 
 
 
 <br/><br/>
-
-#### *<u>ref.</u>*
-[객체지향적의 사실과 오해](https://wikibook.co.kr/object-orientation-ebook/)
