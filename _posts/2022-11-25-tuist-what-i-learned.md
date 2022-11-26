@@ -23,4 +23,9 @@ published: true
    -  성능차이가 왜 발생하는지 알게 되었다
    -  Dynamic framework가 다른 곳에도 사용되는 Static framework를 의존하게 하는 것은 피해야 한다
 
+
+#### Build Setting
+- 여러가지 build setting에 대해 알게되었다.
+  - ONLY_ACTIVE_ARCH, EXCLUDED_ARCHS, MACH_O_TYPE, OTHER_LDFLAGS, FRAMEWORK_SEARCH_PATHS, GCC_PREPROCESSOR_DEFINITIONS, SWIFT_ACTIVE_COMPILATION_CONDITIONS 등등....
+
 <br/><br/>
