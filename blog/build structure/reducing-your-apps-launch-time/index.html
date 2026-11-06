@@ -1,0 +1,696 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[doc] iOS App Launch Time 줄이기 대작전 - 집에 빨리 가기위한 몸부림의 기록</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="pete">
+  
+  <meta property="article:author" content="pete">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="집에 빨리 가기위한 몸부림의 기록">
+<meta property="og:title" content="[doc] iOS App Launch Time 줄이기 대작전">
+<meta property="og:url" content="https://wannagohome.github.io//blog/build%20structure/reducing-your-apps-launch-time/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-05-30T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://wannagohome.github.io//blog/build%20structure/reducing-your-apps-launch-time/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "pete",
+      "url": "https://wannagohome.github.io//blog/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<meta name="robots" content="noindex, nofollow">
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          집에 빨리 가기위한 몸부림의 기록
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://wannagohome.github.io//blog/">
+        <img src="/blog/assets/images/profile.jpg" alt="pete" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://wannagohome.github.io//blog/" itemprop="url">pete</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>work hard to work less</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Contact</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[doc] iOS App Launch Time 줄이기 대작전">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-05-30T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://wannagohome.github.io//blog/build%20structure/reducing-your-apps-launch-time/" class="u-url" itemprop="url">[doc] iOS App Launch Time 줄이기 대작전
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          16 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<p>애플의 문서인 <a href="https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time">Reducing Your App’s Launch Time</a>에 대한 번역 입니다.</p>
+<blockquote>
+  <p>주의: 이해를 돕기 위한 의역의 과정에서 왜곡된 표현이 다수 포함되어 있을 수 있습니다. 자세한 내용은 원문을 참고하시기 바랍니다.</p>
+</blockquote>
+
+<p><br /><br /></p>
+
+<h1 id="reducing-your-apps-launch-time">Reducing Your App’s Launch Time</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p>유저에게 앱의 첫 사용경험은 launch되기 까지 기다리는 것에서 부터 시작합니다. iOS에서는 splash screen으로, macOS에서는 icoun이 통통 튀는 모션으로 앱이 lauching상태에 있음을 나타냅니다. 앱은 유저가 원하는 것을 얻을 수 있도록 최대한 빠르게 작업을 수행해야 할 것입니다. lauch가 너무 올래갈리게 되면 유저는 좋지 않은 사용자 경험을 느끼게 될 것이고, 특히 iOS의 경우 luach time이 과도하게 길어지는 앱은 watchdog에 의해 종료됩니다. 대체로 앱이 그들의 일상중 하나로 자리잡을 경우 유저는 하루에도 여러번 앱을 실행 시킬 것이고, 오래걸리는 lauch time은 그 때마다 유저의 작업을 지연시킬 것입니다.</p>
+
+<p>iOS의 경우 유저가 홈 화면에서 앱의 아이콘을 탭하면 iOS는 앱 프로세스에게 제어권을 넘기기 전의 앱의 lauch를 준비합니다. 그리고 나서 앱은 화면에 UI를 그려내기 위해 코드를 실행십니다. 앱이 UI가 화면에 표시되고 난 이후에도 앱은 여전히 컨텐츠를 준비하거나 loading pinner와 같은 인터페이스를 final control로 교체하기 위해  준비중 일 수도 있습니다. 이런 단계들이 전체적인 launch time을 만들어 내며 당신은 이를 줄이기 위한 단계를 밟아나갈 수 있습니다.</p>
+
+<p><br /></p>
+
+<h2 id="understand-app-activations">Understand App Activations</h2>
+
+<p>activation은 유저가 아이콘을 클릭하거나 앱을 다시 돌아갈 때 발생합니다.</p>
+
+<p>iOS에서는 lauch와 resume 모두 activation에 속합니다. lauch는 프로세스를 실행시켜야 할 때를 말하며, resume은 (suspended 상태라 할지라도) 실행중인 프로세스가 이미 있는 상태를 이야기합니다. 보통의 경우 resume이 훨씬 빠르며 최적화를 위한 작업도 lauch와는 차이가 있습니다.</p>
+
+<p>macOS에서는 정상적인 경우에 시스템이 프로세스를 종료시는 일은 발생하지 않습니다. activation을 위해선 시스템이 compressor에서 memory를 가져오거나 swap 혹은 다시 렌더링 할 필요가 있을 수 있습니다.</p>
+
+<p><br /></p>
+
+<h2 id="understanding-cold-and-worm-launch">Understanding Cold and Worm Launch</h2>
+
+<p>앱의 activation은 디바이스가 이전에 했던 행동에 따라 크게 달라집니다.</p>
+
+<p>예를들어 iOS에서 홈 화면으로 돌아간 즉시 앱을 재진입하게 되면 어느 상황보다 가장 빠르게 activation이 이루어 질것입니다. 그리고 이건 resume과도 비슷합니다. 시스템에서 lauch가 필요한 경우는 “warm launch”라고 부릅니다.</p>
+
+<p>반대로, 예를들어 우저가 memory intensice한 게임을 플레이 하고난 뒤 앱으로 재진입 한다면 이는 평균적인 activation에 비해 훨씬 오래걸릴 것입니다. iOS에서는 forground에 있는 어플리케이션에 더 많은 메모리를 허용하기 위해 다른 앱을 메모리에서 제거합니다. 앱 launching에 의존하는 프레임워크와 데몬은 재 launching과 디스크 에서의 패이징이 필요할 수도 있습니다. 이런 경우 혹은 boot 직후 launch가 되는 경우를 “cold launch”라고 부릅니다.</p>
+
+<p>warn lauch와 cold lauch의 다양한 경우를 고려하십시요. 유저가 앱을 실제로 사용할 때 디바이스의 상태에 따라 다양한(서로 다른) 성능을 경험을 하게 될 것이기 때문입니다. 이것이 다양한 환경에서 테스트함으로 실사용의 환경에서의 성능을 예측하는 것이 중요한 이유 입니다.</p>
+
+<p><br /></p>
+
+<h2 id="gather-metrics-about-your-apps-launch-time">Gather Metrics About Your App’s Launch Time</h2>
+
+<p>launch과정의 복잡합은 앱이 현장에서 어떻게 동작하는지 이해하는 것이 어려울 수 있음을 의미합니다.</p>
+
+<p>iOS앱은 Xcode Organizer의 Lauch Time 측정 도구를 사용해 사용자가 아이콘을 탭한 후 부터 첫 화면이 그려질때 까지의 시간을 millisecond단위로 확인할 수 있습니다. filter를 사용하여 서로 다른 디바이스에서의 launch time을 확인해 보십시요. 현재 릴리즈와 이전 릴리즈의 launch time을 그래프를 통해 비교해 볼 수도 있습니다.</p>
+
+<p><img src="/blog/assets/images/reducing_your_apps_launch_time/reducing-your-app-s-launch-time-1_dark.png?raw=true" alt="1" /></p>
+
+<p><br /></p>
+
+<h2 id="profile-your-apps-launch-time">Profile Your App’s Launch Time</h2>
+
+<p>앱의 launch가 얼마나 오래걸리는 지를 알았다면 왜 이렇게 시간이 걸리는지를 알아야 합니다. 어디서 앱이 시간을 소요하는지에 대한 데이터를 모으기 위해 앱의 코드를 프로파일링 하는 것이 바로 그 방법입니다. 프로파일링 과정중에 Instruments는 앱이 호출한 메소드 정보와 실행하는 얼마나 많은 시간이 걸렸는지에 대한 정보를 수집합니다. 이 데이터를 사용해 잠재적 병목이나 코드의 이슈를 찾아내십쇼.</p>
+
+<p>instruments에 있는 App Launch 템플릿을 사용해 앱을 프로파일 하십시요. instruments는 lauch되는 동안  time profile과 thread-state trace를 수집할 것입니다. thread-state trace를 사용하면 thread가 active 혹은 block 상태에 들어간 시간과 그리고 왜 그런 상태로 변환이 됐는지 알 수 있습니다.</p>
+
+<p>각기 다른 상황에서 이런 요소들이 앱의 launch time에 영향을 미치는지 프로파일링 해보시기 바랍니다. 다음은 테스트 해볼 수 있는 몇 가지 상황들 입니다 :</p>
+
+<ul>
+  <li>디바이스의 전원을 켠 후 처음으로 잠금이 풀린 상태에서 앱을 실행해 보십시오.</li>
+  <li>앱을 강제종료후 실행해 보십시오. 시스템을 앱 프로세스를 종료시킨후 warm launch를 수행할 것입니다.</li>
+  <li>다른 앱들을 연 후 당신의 앱을 실행시키면 시스템은 앱과 앱의 종속성들을 부분적으로 축출(?)[evict] 할 것입니다. 이건 보통의 유저 사용 행태를 반영한 상황 예시입니다.</li>
+  <li>아주 큰 앱을(예를들어 많은 양의 그래픽 리소스를 사용하거나 실시간 카메라 입력을 받는 것들) 사용한 후 당신의 앱을 실행시켜 보십시오. 시스템은 당신의 앱의 프로세스를 종료시키려 할 가능성이 높습니다. 이것은 당신의 앱이 다음번 실행될 동안 많은 앱들을 페이징 해야 한다는 것을 뜻합니다.</li>
+</ul>
+
+<p><img src="/blog/assets/images/reducing_your_apps_launch_time/reducing-your-app-s-launch-time-2.png?raw=true" alt="2" /></p>
+
+<p>UIKit은 메인 쓰레드에서 뷰를 그리고 유저의 이벤트를 처리합니다. 따라서 메인 쓰레드는 앱의 launching이 끝날 시점에 첫 프레임을 그릴 수 있어야만 합니다. 즉, Instruments의 thread trace 에서 나타난 메인 쓰레드가 작업을 수행하거나 선점(?)[preempted]되는데 걸리는 시간 동안 뷰를 그리지 못하거나 유저의 입력 이벤트에 응답하지 못한다는 것을 의미합니다.</p>
+
+<p>앱 launch의 다른 부분을 보기 위해 Time Profile template를 사용해 앱을 프로파일링 할 수 있습니다. 앱 수명주기 타임라인은 앱이 lauching되는 중의 활동을 프로세스 초기화, UIKit 초기화, UIKit 초기 화면 렌더링 그리고 초기 프레임 렌더링으로 나눕니다.</p>
+
+<p><img src="/blog/assets/images/reducing_your_apps_launch_time/reducing-your-app-s-launch-time-3.png?raw=true" alt="3" /></p>
+
+<p><br /></p>
+
+<h2 id="reduce-dependencies-on-external-frameworks-and-dynamic-libraries">Reduce Dependencies on External Frameworks and Dynamic Libraries</h2>
+
+<p>시스템은 당신의 코드가 실행되기 전에 앱의 실행파일과 앱이 의존하고 있는 라이브러리를 찾아 로드해야만 합니다.</p>
+
+<p>Dynamic loader(dyld)는 앱이 필요로 하는 framework와 dynamic library를 찾기 위해 앱의 실행파일을 로드하고 실행파일의 Mach 로드 커멘드를 검사합니다. 그 후엔 각각의 framwork들을 메모리에 로드하고 dynamic library의 적저할 주소를 가리키기 위해 실행파일의 dynamic symbol을 resolve 합니다.</p>
+
+<p>앱이 로드하는 써드 파티 프레임워크 각각은 lauchin time을 늘리게 됩니다. dyld는 이 수 많은 작업들을 유저가 앱을 설치할 때 launch closure에 캐싱하지만, launch closure의 크기와 로딩 후에 작업량은 여전히 library의 수와 크기에 달려있습니다. 따라서 당신은 써드 파티 framework의 개수를 줄임으로서 app의 launch time을 줄일 수 있습니다. 앱에 link된 framework와 Xcode의 Target editor에 설정된 library들에 import하거나 추가한 프레임워크 또한 이 수에 포함됩니다. 반면에 CoreFoundation과 같은 기본 제공 framework는 동일한 framework를 사용하는 다른 프로세스들과 공유된 메모리를 사용하기 때문에 lauch에 time에 미치는 영향이 훨씬 적습니다.</p>
+
+<p><br /></p>
+
+<h2 id="remove-or-reduce-the-static-initializers-in-your-code">Remove or Reduce the Static Initializers in Your Code</h2>
+
+<p>iOS가 앱의 main 함수를 실행하기 전에 실행되어야만 하는 코드는 launch time을 늘립니다. 예를 들어 :</p>
+
+<ul>
+  <li>C++ static 생성자</li>
+  <li>클래스 혹은 카테고리에 정의되어 있는 Objective-C 함수 로드</li>
+  <li>clang attribute __attribute__((constructor))로 표시된 함수</li>
+  <li>앱 또는 framework binary의 __DATA,__mod_init_ 섹션에 linke된 모든 함수</li>
+</ul>
+
+<p>가능하다면 앱이 launching을 끝낸 후, 하지만 작업 결과가 필요해 지기전인 앱 라이프 사이클의 나중 단계로 코드를 이동 시키기 바랍니다. Instruments의 Static Initializer Calls는 앱이 static initializer를 실행하는데 걸리는 시간을 측정해 줍니다.</p>
+
+<p><img src="/blog/assets/images/reducing_your_apps_launch_time/reducing-your-app-s-launch-time-4.png?raw=true" alt="4" /></p>
+
+<p><br /></p>
+
+<h2 id="move-expensive-tasks-out-of-your-application-delegate">Move Expensive Tasks Out of Your Application Delegate</h2>
+
+<p>많은 자원을 소모하는(비싼) 작업을 뒤로 미루기 위해 초기화 코드들을 검사해보십시요. 시스템은 lauch cycle 동안 필요한 작업을 할 수 있도록 AppDelegate 함수를 호출합니다. 이 함수들은 메인 쓰레드에서 동기적으로 실행되며, lauch cycle은 이 함수가 성공적으로 반활 될 때까지 끝나지 않습니다. 결국 이런 함수에서 당신이 수행하도록 하는 비싼 작업들은 lauch cycle을 늦추게 되는 것입니다.</p>
+
+<p>UIKit은 AppDelegate class(UIApplicationDelegate 프로토콜을 구현하는 클래스)를 초기화하고 <code class="language-plaintext highlighter-rouge">application(\_:willFinishLauchingWithOptions:)</code>와 <code class="language-plaintext highlighter-rouge">application(\_:didFinishLauchingWithOptions:)</code>에 메세지를 보냅니다. UIKit은 이 메세지들을 메인 쓰레드 위에서 보내며, 이 메소드들 에서 코드를 싱행하며 보내는 시간은 앱의 launch time을 증가시키게 됩니다. 부디 앱의 첫 화면을 띄우기 위한 필수적인 작업들만 이 메소드에서 수행하고, 나머지는 보다 적당한 시간에 수행되도록 미루시기 바랍니다.</p>
+
+<p>컨텐츠가 리프레시 되는 동안 오래된 컨텐츠를 표시해도 되는 경우, 네트워크 서비스를 이용한 데이터 동기화는 앱이 실행될 때 까지 연기시키는게 좋습니다. 동기화 작업을 비동기 백그라운드 큐로 보내십시요. 네트워크 서비스로 부터 업데이트 사항을 불러오기 위한 백그라운드 테스크를 등록하여 launch time에 데이터를 불러오는 데 필요한 작업량을 줄이십시요.</p>
+
+<p>단순한 앱 lauch가 아닌 앱을 처음 사용할 때는 데이터 저장소나 위치 서비스 같이 뷰가 없는 것들을 초기화 시키십시요. 초기 뷰를 표시하기 뒤한 필수 데이터 만을 불러오기 바랍니다. 앱이 상태를 복원중인지 확인하고 뷰를 복원하는데 필요한 데이터를 준비하십시요. 만약 상태를 복원중인게 아니라면 default한 초기 뷰만을 준비하는게 좋습니다. 예를들어, 여러 이미지 썸네일을 부여주고 유저가 선택한 사진에 대해 구제적인 뷰를 보여주는 사진 캘러리 앱이 있다고 가정해 보겠습니다. 만약 앱이 복원되지 않은 상태에서 lauch 됐다면 처음엔 placeholder 이비지만을 보여주고 실제 이미지 썸네일은 앱의 lauching이 끝난 뒤 부터 채워나가면 됩니다. 그리고 유저가 썸네일을 선택하기 전까지는 원본 이미지를 불러올 필요가 없습니다.</p>
+
+<p>초기 실행시 viable(?)한 앱의 제한된 일부분만 초기화 하십시요. 예를들어, task manager 앱은 앱이 유저의 모든 task정보를 데이터 저장소나 네트워크 서비스로부터 받지 못한 상태이더라도 유저가 task를 생성하고 실행할 수 있도록 할 수 있을것입니다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#lauch-time" class="page__taxonomy-item p-category" rel="tag">lauch time</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#translation" class="page__taxonomy-item p-category" rel="tag">translation</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/#build-structure" class="page__taxonomy-item p-category" rel="tag">Build structure</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-05-30T00:00:00+09:00">May 30, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5Bdoc%5D+iOS+App+Launch+Time+%EC%A4%84%EC%9D%B4%EA%B8%B0+%EB%8C%80%EC%9E%91%EC%A0%84%20https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Freducing-your-apps-launch-time%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Freducing-your-apps-launch-time%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Freducing-your-apps-launch-time%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/build%20structure/what_is_framework/" class="pagination--pager" title="[doc] framework란 무엇일까?
+">이전</a>
+    
+    
+      <a href="/blog/build%20structure/what_happens_when_xcode_build_start-1/" class="pagination--pager" title="[WWDC] Xcode build를 시작하면 어떤일이 벌어질까? - (1)
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/tuist-what-i-learned/" rel="permalink">Tuist를 적용하며 배운것들
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/swift-concurrency-1/" rel="permalink">Swift 동시성 프로그래밍 tutorial - (1)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.
+Async/await, Async/Await: Sequences, ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/object-oriented-programming-1/" rel="permalink">객체지향적인 코드란 무엇인가?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" rel="permalink">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Contact:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 pete. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

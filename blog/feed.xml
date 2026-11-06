@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://wannagohome.github.io//blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://wannagohome.github.io//blog/" rel="alternate" type="text/html" /><updated>2026-11-06T16:54:18+09:00</updated><id>https://wannagohome.github.io//blog/feed.xml</id><title type="html">집에 빨리 가기위한 몸부림의 기록</title><subtitle>work hard to work less</subtitle><author><name>pete</name></author><entry><title type="html">Tuist를 적용하며 배운것들</title><link href="https://wannagohome.github.io//blog/programming/tuist-what-i-learned/" rel="alternate" type="text/html" title="Tuist를 적용하며 배운것들" /><published>2022-11-25T00:00:00+09:00</published><updated>2022-11-25T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/programming/tuist-what-i-learned</id><content type="html" xml:base="https://wannagohome.github.io//blog/programming/tuist-what-i-learned/"><![CDATA[<p>최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자 합니다.</p>
+
+<h4 id="swift-package-manager">Swift Package Manager</h4>
+<ul>
+  <li>패키지를 만드는(선언하는) 법  /  <em>조금더 자세하게한 부분을 익힐 수 있었다</em></li>
+  <li>하나의 타겟에는 서로 다른 언어가 섞일 수 없다</li>
+  <li>헤더를 사용하는 ObjC, ObjC++, C++과 같은 언어는 반드시 퍼블릭 해더가 필요하다</li>
+  <li>하나의 소스파일을 여러 타겟에 중복해서 포함 시킬 수 없다  / <em>매우 불편했던 부분</em></li>
+  <li>리소스 번들에 접근하기 위해서는 SPM이 자동으로 생성해 주는 internal 소스를 사용해야만 한다  /  <em>이것도 불편했던 부분</em></li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="static-framework-vs-dynamic-framework">Static framework vs Dynamic framework</h4>
+<ul>
+  <li>글로만 머리속에 담아두었던 이 둘의 차이를 더 확실하게 이해하게 되었다
+    <ul>
+      <li>성능차이가 왜 발생하는지 알게 되었다</li>
+      <li>Dynamic framework가 다른 곳에도 사용되는 Static framework를 의존하게 하는 것은 피해야 한다</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="build-setting">Build Setting</h4>
+<ul>
+  <li>여러가지 build setting에 대해 알게되었다.
+    <ul>
+      <li>ONLY_ACTIVE_ARCH, EXCLUDED_ARCHS, MACH_O_TYPE, OTHER_LDFLAGS, FRAMEWORK_SEARCH_PATHS, GCC_PREPROCESSOR_DEFINITIONS, SWIFT_ACTIVE_COMPILATION_CONDITIONS 등등….</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h4 id="고민">고민</h4>
+<ul>
+  <li>외부 의존성은 어떻게 관리되어야 하는가?</li>
+  <li>static / dynamic framework 어떤 상황에서 어떤것을 선택해야 할까?
+    <ul>
+      <li>모든 것을 static으로 만들어도 괜찮을까?</li>
+      <li>resource는 어떻게 관리해야할까?</li>
+      <li>preview를 그리기 위해선 dynamic framework가 필요하다. 오직 preview만을 위한 dynamic framework target을 만들고 관리하는게 얼마나 실효성이 있을까?</li>
+    </ul>
+  </li>
+  <li>어떤 모듈 구조가 이상적일까?
+    <ul>
+      <li>feature는 어떤 단위로 나우어야 하나?</li>
+    </ul>
+  </li>
+  <li>동료들이 불편해 하진 않을까?
+    <ul>
+      <li>어떻게 하면 tuist를 이용한 프로젝트 관리를 어색해 하지 않도록 도울 수 있을까?</li>
+      <li>전혀 신경쓸 필요가 없도록 만드려면 어느 수준까지 template화가 되어 있어야 할까?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /><br /></p>]]></content><author><name>pete</name></author><category term="Programming" /><category term="Tuist" /><summary type="html"><![CDATA[최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자 합니다.]]></summary></entry><entry><title type="html">Swift 동시성 프로그래밍 tutorial - (1)</title><link href="https://wannagohome.github.io//blog/programming/swift-concurrency-1/" rel="alternate" type="text/html" title="Swift 동시성 프로그래밍 tutorial - (1)" /><published>2022-09-12T00:00:00+09:00</published><updated>2022-09-12T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/programming/swift-concurrency-1</id><content type="html" xml:base="https://wannagohome.github.io//blog/programming/swift-concurrency-1/"><![CDATA[<p>매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.<br />
+<a href="https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md">Async/await</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md">Async/Await: Sequences</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0300-continuation.md">Continuations for interfacing async tasks with synchronous code</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md">Structured concurrency</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0306-actors.md">Actors</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0317-async-let.md">async let bindings</a> 등등..<br />
+많은 언어들이 이미 지원하는 기능으로 전혀 새로운 것은 아니지만, 수 많은 개발자들의 생산성을 높여줄 수 있을 것이라는 기대에 많은 분들이 기다려 왔던 것으로 압니다. 오늘은 이들을 어떻게 사용하는지에 대해 알아보고자 합니다.</p>
+
+<p><br /></p>
+
+<h1 id="배경">배경</h1>
+<p>동시성은 아주 오래전 부터 제시되어 온 개념입니다. 여러가지 연산을 독집적인 단위로 나누고 이를 서로 다른 실행 흐름에서 실행할 수 있는 능력을 의미하며, 컴퓨터 프로세서가 multi threading 성능을 높이는 쪽으로 발전하기 시작하면서 동시성 프로그래밍 또한 함께 발전하게 되었습니다.</p>
+
+<p>동시성 프로그래밍이라는 개념이 오래된 만큼, swift는 이미 동시성 프로그래밍을 지원하고 있었습니다. 바로 GCD와 Operation Queue를 통해서 말이지요. GCD는 아주 강력한 프레임워크로서 동시성 프로그래밍을 아주 편하게 만들어 줍니다. (thread를 직접 만들과 관리할 필요가 없다니 세상에 마상에….) 하지만 인간의 욕심은 끝이 없어 GCD의 closure 까지 없애고자 하니, 이를 돕는 것이 이번 글에서 알아볼 async, await, actor 입니다.</p>
+
+<p>특히 iOS 앱을 개발하다 보면 수 많은 비동기 작업들을 수행하게 됩니다. 기존에는 이 비동기 작업이 만들어 내는 callback 지옥을 벗어나고자 반응형 프로그래밍을 많이들 사용해 왔었는데, 언어의 차원에서 이를 개선할 수 있는 방안이 새롭게 추가된 것입니다.</p>
+
+<p><em><font color="gray">(GCD의 작동 방식이나 Dispatch Queue등에 대한 내용을 생략하겠습니다)</font></em></p>
+
+<p><br /></p>
+
+<h1 id="비동기-함수를-만들어보자">비동기 함수를 만들어보자</h1>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">sum</span><span class="p">(</span><span class="n">_</span> <span class="nv">a</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">_</span> <span class="nv">b</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">async</span> <span class="o">-&gt;</span> <span class="kt">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="p">}</span>
+
+<span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nf">sum</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="c1">// 5</span>
+</code></pre></div></div>
+
+<p>비동기 함수를 만드는 방법은 아주 간단합니다. return type을 쓰기전에 <strong><font color="#ED6E57">async</font></strong> 키워드를 붙이고, 이를 사용하는 쪽에서는 <strong><font color="#ED6E57">await</font></strong> 키워드를 붙여 호출하는 것 입니다. 하지만 조금 이상한 부분이 있습니다. 단순히 + 연산을 하는 것에 비동기 작업이 필요한가요? 여기에서 <strong><font color="#ED6E57">async</font></strong> 는 비동기 작업이 <u>있을 수 있다</u>는 것을 나타냅니다. 따라서 sum(_:_:)과 같은 함수를 만들어도 아무런 문제없이 컴파일이 가능합니다.</p>
+
+<p>명심하시기 바랍니다. suspension point는 async가 함수가 아닌 await로 함수가 호출되는 부분에서 만들어집니다.</p>
+
+<p>이와 함께 몇 가지 더 짚고 넘어가야할 내용이 있습니다.</p>
+<ol>
+  <li>async 함수가 호출되어 suspend 상태에 들어갔을 때 이 함수를 호출한 다른 async 함수들도 모두 suspend 됩니다.</li>
+  <li>동기함수는 async 함수를 직접 호출하지 못합니다. 동기함수는 자기자신을 suspend 시키는 방법을 알지 못합니다.</li>
+  <li>suspend는 blocking이 아닙니다. suspend가 일어났어도 thread는 계속 동작합니다. 만약 비동기 함수 Foo를 호출한뒤 다른 비동기 함수 Bar를 호출한다고 했을 때, Bar가 먼저 실행 될 수 있습니다.</li>
+</ol>
+
+<p><br /></p>
+
+<p>비동기 함수가 Error를 내뱉는 경우가 있을 수 있습니다. 네트워크 호출이 가장 대표적인 예시가 될 것 같네요.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">fetch</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Data</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">try</span> <span class="k">await</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">someURL</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="k">try</span><span class="p">?</span> <span class="k">await</span> <span class="nf">fetch</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"Data fetched"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>이렇게 async await에 thorws와 try가 함께 사용될 수 있습니다. throws는 async뒤에 써야하지만 try는 awiat앞으로 와야 합니다.</p>
+
+<p><br /></p>
+
+<h1 id="비동기-함수를-호출해-보자">비동기 함수를 호출해 보자</h1>
+
+<p>사실 위의 소스코드와 설명들을 자세히 들어다 보면 이상한 점을 발견할 수 있습니다. await로 async 함수를 호출하는 부분은 suspension point가 될 수 있습니다. 그리고 동기 함수는 이 suspension을 어떻게 다뤄야 할지 알지 못하니 직접 호출이 불가능합니다. 그런데 우리가 만드는 함수들은 모두 기본적으로 동기 함수입니다. 이는 top level도 마찬가지 입니다. 따라서 위의 코드를 그대로 따라하면 컴파일 오류로 실행조차 되지 않는것을 확인 할 수 있습니다. async 함수는 또다른 async 함수에서만 호출이 가능한데, 어떻게 호출할 수 있을까요?</p>
+
+<p>크게 세 가지를 최초의 async 함수로 사용할 수 있습니다.</p>
+<ol>
+  <li>@main attribute가 붙어있는 곳의 main 함수. 즉, 프로그램의 entry point.</li>
+  <li>SwiftUI framework 내에 async 함수를 trigger 할 수 있는 곳들 ex_ refreshable(), task()</li>
+  <li><a href="https://developer.apple.com/documentation/swift/task">Task</a></li>
+</ol>
+
+<p><strong><font color="#ED6E57">Task</font></strong> 는 동기함수 에서 async 함수를 호출 할 수 있도록 해줍니다.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">fetch</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Data</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">try</span> <span class="k">await</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">someURL</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">fetchAsynchronously</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">Task</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nf">fetch</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<p>물론 fetchAsynchronously()는 여전히 suspend를 하지 못하므로 Task의 결과를 기다리지 않고 return 됩니다.</p>
+
+<p><br /></p>
+
+<p>async와 await의 사용법을 간단하게 짚어보았습니다. 다음에는 비동기 프로퍼티에 대해 알아보겠습니다.</p>
+
+<p><br /><br /></p>]]></content><author><name>pete</name></author><category term="Programming" /><category term="Swift" /><category term="Concurrency" /><summary type="html"><![CDATA[매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요. Async/await, Async/Await: Sequences, Continuations for interfacing async tasks with synchronous code, Structured concurrency, Actors, async let bindings 등등.. 많은 언어들이 이미 지원하는 기능으로 전혀 새로운 것은 아니지만, 수 많은 개발자들의 생산성을 높여줄 수 있을 것이라는 기대에 많은 분들이 기다려 왔던 것으로 압니다. 오늘은 이들을 어떻게 사용하는지에 대해 알아보고자 합니다.]]></summary></entry><entry><title type="html">객체지향적인 코드란 무엇인가?</title><link href="https://wannagohome.github.io//blog/programming/object-oriented-programming-1/" rel="alternate" type="text/html" title="객체지향적인 코드란 무엇인가?" /><published>2022-09-09T00:00:00+09:00</published><updated>2022-09-09T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/programming/object-oriented-programming-1</id><content type="html" xml:base="https://wannagohome.github.io//blog/programming/object-oriented-programming-1/"><![CDATA[<p>조영호님의 책 <a href="https://wikibook.co.kr/object-orientation-ebook/">객체지향적의 사실과 오해</a>를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.</p>
+
+<hr />
+
+<h1 id="객체지향이란">객체지향이란</h1>
+
+<p>객체지향은 과거 프로그램을 순차적인 명령어의 집합으로 바라보던 시각에서 벗어나 독립적인 객체들의 집합과 (메세지를 통한) 객체들의 상호 협력으로 바라보는 프로그래밍 페러다임입니다. 프로토타입 기반 언어인 Javascript를 제외한 현대의 거의 대부분의 프로그래밍 언어가 객체지향을 지원하고 있고, 이들 대부분은 class라는 것을 이용해 객체를 구현해냅니다. 이 때문에 객체지향을 class기반의 프로그래밍으로 오해하는 경우들이 종종 발생하는 것 같고 저 또한 이 둘의 차이를 깨닫게 된지 얼마 안되는 것 같습니다. 하지만 class는 객체의 구현일 뿐, 정말 중요한 것은 객체 그 자체를 바라보는 것입니다. 객체와 객체간의 협력에 대해 이해하는 것이 객체지향을 이해하는 것의 핵심이라고 할 수 있습니다.</p>
+
+<p><br /></p>
+
+<h1 id="객체란">객체란</h1>
+
+<p>객체는 독립적으로 인식 가능한 개체로서, 식별자와 상태 그리고 행동을 가지고 있는 실체입니다. 우리는 이 객체를 실행 가능한 코드로서 구현해 냅니다.</p>
+
+<p><strong>행동</strong><br />
+객체지향 페러다임에서 프로그램은 서로 다른 역할과 책임을 가지고 있는 객체들이 협력을 통해 자신의 역할을 다하는 형태로 만들어집니다. 이때, 객체들의 협력은 기본적으로 요청과 응답으로 이루어지며, 요청과 응답은 객체들이 주고 받는 메세지가 됩니다. 특정 객체가 다른 객체들과 협력하기 위해, 자신의 책임을 다하기 위해 반드시 필요한 것이 행동입니다. 다른 객체에게 요청을 보내고, 수신 받은 요청을 수행해 응답하는 것 모두가 객체의 행동입니다. 이때, 객체는 행동을 통해 다른 객체들과의 협력에 참여하기 때문에 이를 위해 행동은 외부에 가시적이어야 합니다.</p>
+
+<p><strong>상태</strong><br />
+객체의 행동은 때에 따라 달라지기도 합니다. 그리고 이 ‘때’를 결정하는 것이 바로 상태입니다. 상태는 객체가 가지고 있는 특정 시점에 대한 정보의 집합으로 정의내릴 수 있습니다.<br />
+객체는 모두 독립적이며 자율적인 존재입니다. 객체가 자율적이기 위해서는 자신이 가지고 있는 상태를 오직 본인만이 컨트롤 할 수 있도록 해야합니다. 만약 다른 객체가 상태에 간섭할 수 있게 된다면, 객체는 본인의 행동을 본인이 결정할 수 없는 수동적인 존재가 되는 것입니다. 따라서 상태는 외부로 부터 감추어져 있어야 합니다. 그리고 우리는 이를 <strong>캡슐화</strong>라고 부릅니다. 객체는 자신의 상태를 감추고 행동만을 외부에 노출 시키는 것입니다.</p>
+
+<p>이 때, 객체가 취하는 행동은 여러가지 side effect를 야기시킬 수 있습니다. 행동은 상태의 영향을 받지만, 반대로 상태를 변경시키기도 하기 때문입니다. 따라서 객체의 행동은 <u>*객체 자신의 상태 변경과 행동 내에서 협력하는 다른 객체에 대한 메세지 전송*</u>이라는 side effect를 명확하게 서술하고 있어야 합니다.</p>
+
+<p><strong>식별자</strong><br />
+객체의 상태는 가변적입니다. 따라서 서로 다른 객체의 상태가 동일해 질 수 있는데, 아무리 상태가 같다고 하더라도 객체는 독립적으로 존재하며 다루어 져야 하므로 객체의 동일성을 식별하기 위한 식별자가 필요합니다. 즉 식별자란, 상태에 상관 없이 객체를 유일하기 식별하기 위한 프로퍼티 입니다.</p>
+
+<p><strong>행동이 상태를 결정한다</strong><br />
+객체지향적인 설계에서 주의할 점은 상태가 행동에 앞서지 않도록 하는 것입니다. 앞서 이야기 했듯이 객체지향 프로그래밍은 객체간의 협력으로 프로그램을 만드는 페러다임입니다. 따라서 협력을 먼저 생각해야 하며, 상태는 적절한 협력을 위해 따라오는 것일 뿐입니다. 만약 상태를 먼저 생각하게 되면 캡슐화를 저해할 수 있고, 객체를 협력으로 부터 멀어지게 만들 수 있으며, 협력에 참여가 어려워 짐에 따라 재사용성이 떨어질 수 있습니다.</p>
+
+<p><br /></p>
+
+<h1 id="타입">타입</h1>
+
+<p>객체지향에 대한 설명을 찾아보면 ‘객체지향은 현실 세계를 소프트웨어 적으로 구현한 것’이라고 표현하는 것을 종종 볼 수 있습니다. 하지만 우리는 현실세계의 모든것을 구현해 내지 못합니다. 현실세계는 너무나 복잡하고 변수가 많기에 이를 모두 구현하는 것을 불가능에 가깝습니다. 따라서 우리는 이를 해결하기 위해 불필요한 세부사항들을 제거하는데 이를 <strong><font color="#ED6E57">추상화</font></strong>라고 합니다. 추상화는 어떤 양상, 세부 사항, 구조를 더욱 명확하게 이해하기 위해 특정 부분을 의도적으로 생략하거나 감춤으로써 복잡도를 극복하는 방법이라고 정의할 수 있습니다. 추상화는 두 차원에서 이루어 지는데, 1. 구체적인 사물들 간의 공통점은 취하고 차이점은 버리는 일반화를 통해 단순하게 만드는 것  2. 중요한 부분을 강조하기 위해 불필요한 세부 사항을 제거함으로써 단순하게 만드는 것 입니다.</p>
+
+<p>공통점을 기반으로 객체들을 묶기 위한 그릇을 <strong><font color="#ED6E57">개념</font></strong>이라고 하며, 개념을 이용하면 객체를 여러 그룹으로 <strong><font color="#ED6E57">분류</font></strong>할 수 있습니다. 객체에는 이런 개념을 적용하는 것이 가능해서 객체가 개념 그룹의 일원이 될때, 이 객채를 개념의 <strong><font color="#ED6E57">인스턴스</font></strong>라고 합니다. 객체를 <strong><font color="#ED6E57">분류</font></strong>한다는 것은 객체를 특정한 개념 집합에 포함시키거나 포함시키지 않는 작업을 의미하게 되는데, 이 분류가 객체지향 설계의 품질을 결정하는 중요한 요소가 됩니다. 객체를 적절하게 분류해내지 못하면 유지보수가 어려워지고 변화에 대해 닫힌 구조가 되기 쉽습니다. 정리하자면, 객체를 특정 개념으로 분류하는 것은 추상화의 두 차원을 적용하는 것과 일맥상통한 이야기가 되므로, 개념은 추상화를 위한 도구라고 볼 수 있게 됩니다.</p>
+
+<p>이미 눈치 채셨을지 모르겠지만 개념이라는 것에 대한 설명은 우리가 사용하는 <strong><font color="#ED6E57">타입</font></strong>과 무척이나 닮아있습니다. 실제로 타입은 개념이라는 것을 프로그래밍 영역으로 그대로 가져온 것일 뿐이기 때문에 정의 자체는 동일합니다. 다만, 타입은 데이터에 대한 의미부여라는 점에서 차이가 있을 뿐입니다. 그렇다면 우리는 객체의 타입을 어떻게 분류해야할까요? 객체가 어떤 타입에 속하는지를 결정하는 것은 객체의 행동입니다. 동일한 행동을 하는 객체가 있다면 동일한 타입으로 분류 될 수 있다는 것 입니다. 결국 가장 먼저 생각해야 하는 것은 객체의 행동입니다.</p>
+
+<p>여기서 눈여겨 봐야할 점중 하나는 객체의 타입을 결정하는 요소에 상태는 빠져있다는 것입니다. 동일한 데이터를 가지고 있는 객체라도 행동이 다르면 서로 다른 타입으로 분류해야 하며, 데이터가 다르더라도 행동이 같으면 같은 타입으로 분류해야 합니다. 하지만 행동은 상태에 영향을 받습니다. 따라서 상태가 달라지면 동일한 메세지를 처리하는 방식이 달라질 수 있다는 것이고 우리는 이를 <strong><font color="#ED6E57">다형성</font></strong>이라고 부릅니다. 다형성은 동일한 요청에 다른 방식으로 응답할 수 있는 능력을 의미합니다.</p>
+
+<p>타입에 대해 마지막으로 살펴볼 부분은 바로 ‘타입에는 계층구조가 있다’는 것입니다. 타입은 행동으로 분류됩니다. 동일한 행동을 하나의 타입으로 묶어 놨는데, 그들 중 일부가 또다시 공통된 행동을 보인다면 해당 타입을 특수화 하여 조금 더 일반적인 타입과 계층적인 관계를 만들 수 있을 것입니다. 여기서 일반적인 타입을 슈퍼타입 혹은 부모타입 이라고 하며, 특수화된 타입을 서브타입 혹은 자녀타입이라고 합니다. 그리고 이것이 바로 객체지향의 <strong><font color="#ED6E57">상속성</font></strong>입니다.</p>
+
+<p><br /></p>
+
+<h1 id="다시한번-객체지향이란">다시한번 객체지향이란</h1>
+
+<p>객체지향의 특성을 이야기 해보라 한다면 보통 다음의 네가지를 꼽습니다.</p>
+<ol>
+  <li>캡슐화</li>
+  <li>추상화</li>
+  <li>다형성</li>
+  <li>상속성</li>
+</ol>
+
+<p>객체지향이 이런 특성을 가진다는 것을 알고는 있었지만, 두리뭉술 하게 이해하고 있었던 것을 객체에 대한 깊은 이해를 통해 각각의 특성이 어떤 의미를 가지고 있고 왜 이런 특성을 가지게 됐는지 조금 더 명확하게 이해할 수 있게 되는 것 같습니다. 요약하자면, <strong><font color="#ED6E57">캡슐화</font></strong>는 협력에 필요한 행동만을 들어내고 상태를 감춤으로써 객체의 독립성과 자율성을 높이는 것, <strong><font color="#ED6E57">추상화</font></strong>는 행동의 공통점을 취하고 차이점을 버림으로서 복잡도를 낮추고 공통된 행동을 보이는 객체를 동일한 타입으로 분류하는 것, <strong><font color="#ED6E57">다형성</font></strong>은 행동이 같더라도 다른 방식으로 응답할 수 있는 능력, <strong><font color="#ED6E57">상속성</font></strong>은 공통된 타입을 특수화 하여 계층된 분류를 상세화 하는 것 이라고 할 수 있을 것 같습니다.</p>
+
+<p>다음 글에서는 어떻게 하면 객체지향적인 구조를 만들 수 있을지에 간단하게 이야기 해보도록 하겠습니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://wikibook.co.kr/object-orientation-ebook/">객체지향적의 사실과 오해</a></p>]]></content><author><name>pete</name></author><category term="Programming" /><category term="OOP" /><category term="객체지향의 사실과 오해" /><summary type="html"><![CDATA[조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.]]></summary></entry><entry><title type="html">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기</title><link href="https://wannagohome.github.io//blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" rel="alternate" type="text/html" title="arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기" /><published>2022-07-13T00:00:00+09:00</published><updated>2022-07-13T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary</id><content type="html" xml:base="https://wannagohome.github.io//blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/"><![CDATA[<p>최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습니다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<p>지금은 맥의 모든 라인업에서 애플 실리콘 제품이 출시되기도 했고, 거의 대부분의 소프트웨어도 arm64 아키텍쳐에 대응하는 제품을 출시하며 호환성 문제가 거의 사라져 가고있는 것 같습니다. 하지만 여전히 업데이트가 이루어 지지 않고 있는 소프트웨어도 조금 남아있는 상황입니다.</p>
+
+<p>개발을 하다보면 여러가지 도구를 사용하게 되는데, 대부분의 경우 공개되어 있는 소스코드를 모듈 형태로 의존하게 됩니다. 하지만 소스코드가 아닌 바이너리를 제공하는 경우도 있는데, 이 바이너리가 앞서 이야기 했던 업데이트가 이루어지지 않았을 경우, 즉, arm64에 대한 대응이 없을 경우 문제가 될 수 있습니다. (arm64-ios-simulator binary가 없는 경우)</p>
+
+<p><br /></p>
+
+<h3 id="문제점">문제점</h3>
+
+<p>이제 많은 개발자들이 애플 실리콘 맥으로 개발을 하지만, iOS 시뮬레이터는 아직 x86_64 아키텍쳐를 지원합니다. 따라서 x86_64 아키텍처를 사용하여 빌드하면 arm64 바이너리가 없는 의존성을 사용하더라도 빌드에 성공할 것입니다. 실제로 build setting에 EXCLUDED_ARCHS로 arm64를 설정하면 아무런 문제없이 빌드 됩니다.</p>
+
+<p>하지만 이 방법은 여전히 몇 가지 문제점을 내포하고 있습니다.</p>
+
+<ul>
+  <li>디버깅 속도 저하
+    <ul>
+      <li>애플 실리콘 맥으로 x86 아키텍처 빌드를 할 경우 다음과 같은 경고를 볼 수 있습니다.
+<code class="language-plaintext highlighter-rouge">Warning: Error creating LLDB target at path using an empty LLDB target which can cause slow memory reads from remote devices.</code> 사실 인텔맥에서 arm64 아키텍처로 빌드할 경우에도 동일하게 표시되는데, cpu의 아키텍쳐와 빌드하는 아키텍쳐가 다를 경우 LLDB 성능이 저하 될 수 있습니다.</li>
+    </ul>
+  </li>
+  <li>SPM 사용의 어려움
+    <ul>
+      <li>몇가지 패키지의 경우 x86 빌드를 강제하면 다음과 같은 에러가 발생합니다.
+<img src="/blog/assets/images/build_app_with_arm64_simulator_without_arm64_simulator_binary/1.png" alt="1" width="80%" class="center" />
+swiftmodule안에 x86 타겟이 포함되지 않아 모듈을 찾지 못한것입니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="시도실패">시도(실패)</h3>
+
+<p>문제가된 SDK의 경우 cocoapod으로 제공이 되고 있었고, podspec에서 부터 EXCLUDED_ARCHS로 arm64가 지정되어 있었기 때문에 pod을 사용하는 것이 아닌 framwork를 직접 참조하도록 해보았지만, 역시나 실패하였습니다. xcode는 arm64-ios-simulator binary를 찾아보았지만 발견하지 못했으니 당연하겠죠.</p>
+
+<p><br /></p>
+
+<h3 id="해결">해결</h3>
+
+<p>따라서 static linker가 바이너리를 찾지 못해도 넘어가도록 하는 방법이 필요했고, 해결책은 단순했습니다. 제공되는 framwork를 xcframework로 만들고, 해당 의존성을 사용하는 코드를 전처리기로 제외시키는 것입니다. 아직 정확한 이유를 파악하진 못했지만, fat framework를 xcframework로 만들어 사용하니, static linker가 warning을 내뱉긴 하지만 binary가 없다고 fail 시키진 않았습니다.</p>
+
+<p>fat framework를 xcframework로 만드는 방법은 간단합니다. xcframwork는 아이폰용, simulator용 바이너리가 각각 필요하기 때문에 하나의 fat framework로 두 바이너리를 추출해 만들고 합치는 것입니다.</p>
+
+<p>fat framework를 복사하여 두 개로 만든 뒤, 아이폰용으로 사용할 framwork의 info.plist의 CFBundleSupportedPlatforms를 iPhoneOS로 설정하고 이 바이너리를 <code class="language-plaintext highlighter-rouge">lipo -extract</code>로 arm64 바이너리만 추출합니다.</p>
+
+<p>simulator용으로 사용할 frmawork의 info.plist의 CFBundleSupportedPlatforms은 iPhoneSimulator로 설정하고 <code class="language-plaintext highlighter-rouge">lipo -extract</code> x86_64 바이너리만 추출 합니다.</p>
+
+<p>이 두 바이너리를 <code class="language-plaintext highlighter-rouge">xcodebuild -create-xcframework</code>로 xcframework를 만들면 끝입니다.</p>
+
+<p>물론 xcframework로 만들었다고 해서 바로 빌드가 되진 않고 해당 의존성에서 제공하는 코드들은 제외시켜야 symbol을 못찾았다고 fail이 나지 않습니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPFrameworks/Concepts/WeakLinking.html">Weak Linking</a></p>]]></content><author><name>pete</name></author><category term="Xcode" /><category term="binary" /><category term="build setting" /><summary type="html"><![CDATA[최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습니다.]]></summary></entry><entry><title type="html">모듈화의 장단점</title><link href="https://wannagohome.github.io//blog/modulization/should-we-modulize-app/" rel="alternate" type="text/html" title="모듈화의 장단점" /><published>2022-06-22T00:00:00+09:00</published><updated>2022-06-22T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/modulization/should-we-modulize-app</id><content type="html" xml:base="https://wannagohome.github.io//blog/modulization/should-we-modulize-app/"><![CDATA[<p>앱을 모듈화 하는 과정은 정말 어렵습니다. 처음부터 멀티 모듈로 설계된 앱이라면 모를까 이미 만들어져 있는 프로그램 그것도 어느정도 규모가 있는 프로그램이라면 프로젝트 구조의 근간을 바꾸는 모듈화가 결코 쉽게 느껴질 수 없을 것입니다. 그렇다면 이미 잘 돌아가고 있는 서비스를 여러개의 모듈로 쪼개야만 할까요? 정확한 판단을 위해 모듈화를 결정하면 어떤일이 벌어질지 짚어보겠습니다.</p>
+
+<h2 id="장점">장점</h2>
+
+<h5 id="생산성-증가">생산성 증가</h5>
+<p>모듈들의 책임과 경계가 명확하게 나뉘어져 있을 수록 생산성이 커지는 효과를 기대할 수 있습니다. 어플리케이션의 사이즈가 커질 수록 여러사람이 협력하여 하나의 앱을 만들어 가게 되는데, monolithic한 구조에서는 동료들의 작업 결과물이 충돌을 일으킬 수 있고, 선행되어야 하는 작업으로 인해 병목이 발생할 수도 있습니다. 하지만 멀티 모듈의 구조가 잘 잡혀있다면 정해진 인터페이스안에서 개발함으로써 충돌과 병목을 방지할 수 있습니다.</p>
+
+<h5 id="확장엔-열려있고-수정엔-닫혀있다">확장엔 열려있고, 수정엔 닫혀있다</h5>
+<p>사실 모듈화의 많은 장점들은 OOP적인 관점에서 봤을 때 좋은 코드 구조가 가져다 주는 장점과 겹쳐있습니다. 프로그램을 논리적으로 분리시키는 것이 객체의 책임을 분리시키는 것과 크게 다르지 않기 때문이죠. 따라서 SRP, OCP등을 모듈화에도 동일하게 적용시킬 수 있다고 생각합니다.</p>
+
+<p>모듈의 책임과 경계가 명확하고 모듈간의 의존성이 느슨하다면, 수정사항이 생겼을 때 필요한 모듈만을 수정하도록 관리포인트를 최소화 할 수 있고, 모듈끼리는 추상화된 형태로만 의존하기 때문에 해당 인터페이스를 구현하는 다른 구현체로 모듈을 교체하기도 쉬워집니다.</p>
+
+<h5 id="구조를-파악하기-쉽다">구조를 파악하기 쉽다</h5>
+<p>모듈과 의존관계만으로 프로젝트의 전체적인 구조를 파악하기가 쉬워집니다. 게다가 구조 파악이 쉬워지니 디버깅 포인트를 찾기도 쉽습니다.</p>
+
+<h5 id="테스트가-용이하다">테스트가 용이하다</h5>
+<p>우리가 클래스의 책임을 최소화 하고 coupling을 제거하는 이유중 하나는 testability를 높이기 위함입니다. 이는 모듈에도 동일하게 적용되어 각 모듈의 테스트를 용이하게 만들어 줍니다.</p>
+
+<h5 id="재사용성-증가">재사용성 증가</h5>
+<p>모듈화가 잘되어 있다면 프로그램 전체의 코드 재사용성이 크게 증가합니다. 단순히 OOP에서 클래스를 재사용하는 수준이 아닌, 필요한 모듈들을 조합하여 데모앱을 만들어 볼 수 도 있습니다.</p>
+
+<h5 id="빌드타임-감소">빌드타임 감소</h5>
+<p>incremental build 와 clean build 시간 모두를 감소시킬 수 있습니다. 모듈을 잘게 쪼개어 놓는 다면 incremental build과정에서 수정한 모듈만 빌드하게 되기 때문에 incremental build 시간을 획기적으로 줄일 수 있습니다.</p>
+
+<p>clean build 시간을 줄이는 방법에는 크게 세 가지가 있다고 생각하는데, 먼저는 병렬빌드를 최대한 활용하는 것입니다. 앱이 여려개의 모듈로 쪼개지면 모듈 각각을 병렬적으로 빌드할 수 있게 되고, 이들의 의존관계를 잘 설정한다면 병렬빌드를 효율적으로 활용 할 수 있게 됩니다. 모듈의 빌드를 바이너리 형태로 캐싱함으로써 빌드를 건너뛸수도 있고, 개발하고 있는 기능의 피쳐앱 타겟을 만들어 빌드의 양 자체를 대폭 줄일 수도 있습니다.</p>
+
+<p><br /><br /></p>
+
+<h2 id="단점">단점</h2>
+
+<h5 id="모듈화를-위한-리소스">모듈화를 위한 리소스</h5>
+<p>앞서 이야기 했듯이 이미 만들어져 있는 프로그램은 여러개의 모듈로 쪼개는 일은 정말 많은 고민과 노력을 필요로 합니다. 지금까지 살펴본 모듈화의 장점을 얻기 위해선 모듈의 경계에 대한 많은 고민을 필요로 하고, 프로젝트의 구조 자체를 바꾸는 것이기에 모든 구성원들의 동의와 노력이 필요로 합니다.</p>
+
+<h5 id="관리포인트-증가">관리포인트 증가</h5>
+<p>모듈화를 했을 때 향상되는 유지보수성에 대해 이야기 했지만 반면에 관리포인트가 증가하는 면도 있습니다. 프로젝트 유지보수를 위해 모듈 레벨의 관리가 추가로 필요해 지는 것입니다. 특정 모듈에 대한 의존성이 많아지면 이를 어떻게 분산시킬지, 모듈이 커지게되면 이를 또 어떻게 나눌지 등등에 대한 고민이 추가로 필요하게 됩니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://www.youtube.com/watch?v=DngAZyWMGR0">Making Architecture Matter - Martin Fowler Keynote</a></p>
+
+<p><a href="https://soojin.ro/blog/loose-coupling">모바일 앱의 느슨한 결합</a></p>]]></content><author><name>pete</name></author><category term="Modulization" /><category term="modulization" /><summary type="html"><![CDATA[앱을 모듈화 하는 과정은 정말 어렵습니다. 처음부터 멀티 모듈로 설계된 앱이라면 모를까 이미 만들어져 있는 프로그램 그것도 어느정도 규모가 있는 프로그램이라면 프로젝트 구조의 근간을 바꾸는 모듈화가 결코 쉽게 느껴질 수 없을 것입니다. 그렇다면 이미 잘 돌아가고 있는 서비스를 여러개의 모듈로 쪼개야만 할까요? 정확한 판단을 위해 모듈화를 결정하면 어떤일이 벌어질지 짚어보겠습니다.]]></summary></entry><entry><title type="html">Swift Package Manager에 대해 알아보자</title><link href="https://wannagohome.github.io//blog/build%20structure/swift-package/" rel="alternate" type="text/html" title="Swift Package Manager에 대해 알아보자" /><published>2022-06-21T00:00:00+09:00</published><updated>2022-06-21T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/build%20structure/swift-package</id><content type="html" xml:base="https://wannagohome.github.io//blog/build%20structure/swift-package/"><![CDATA[<p>swift는 많은 플랫폼을 지원하는 언어입니다. 따라서 애플은 다양한 플랫폼에서 동일하게 동작하는 패키지의 필요성을 느끼게 되었고 Swift Package Manager(SPM)을 만들게 되었다고 합니다. 그래서 인지 spm은 자신만의 독자적인 빌드 시스템을 가지고 있습니다. 즉, swift로 개발하고 있다면 spm을 통해 환경에 상관없이 swift 라이브러리를 사용할 수 있습니다.</p>
+
+<p><!-- spm은 swift로 만들어졌으며, spm또한 하나의 swift 패키지 입니다. --></p>
+
+<p>이제 swift 패키지를 직접 만들어 보면서 자세한 내용들을 살펴보겠습니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">mkdir </span>SamplePackage <span class="o">&amp;&amp;</span> <span class="nb">cd </span>SamplePackage
+ <span class="nv">$ </span>swift package init
+ <span class="nv">$ </span>tree <span class="nb">.</span>
+<span class="nb">.</span>
+├── Package.swift
+├── README.md
+├── Sources
+│   └── SamplePackage
+│       └── SamplePackage.swift
+└── Tests
+    └── SamplePackageTests
+        └── SamplePackageTests.swift
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">swift package init</code> 으로 패키지를 만들수 있습니다. 디렉토리 이름을 딴 패키지가 만들어 졌네요. <code class="language-plaintext highlighter-rouge">Package.swift</code> 파일은 manifest 파일로 패키지의 전체 구조를 나타냅니다. 아래와 같은 파일이 만들어 졌네요. (Xcode 13.4.1)</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// swift-tools-version: 5.6</span>
+<span class="c1">// The swift-tools-version declares the minimum version of Swift required to build this package.</span>
+
+<span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackage"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, and make them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackage"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"SamplePackage"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Dependencies declare other packages that this package depends on.</span>
+        <span class="c1">// .package(url: /* package url */, from: "1.0.0"),</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package. A target can define a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package, and on products in packages this package depends on.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackage"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackageTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"SamplePackage"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>swift 패키지의 manifest는 언제나 <code class="language-plaintext highlighter-rouge">// swift-tools-version: *</code> 라는 커멘트 주석으로 시작해야 합니다. 패키지를 빌드하기위한 swift의 최소 버전을 나타냅니다.</p>
+
+<p>swift 패키지는 <strong>Products, Dependencies, Targets</strong> 이렇게 크게 세 부분을 나뉩니다. <strong>Dependencies</strong>에는 패키지에 필요한 또 다른 패키지가 의존성으로 들어갑니다. 각 의존성에는 우리가 만드려는 패키지 처럼 결과물은 product를 제공하고 패키지에서 사용할 수 있습니다.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+         <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/Alamofire/Alamofire.git"</span><span class="p">,</span> <span class="o">.</span><span class="nf">upToNextMajor</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="s">"5.6.1"</span><span class="p">)),</span>
+         <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/Alamofire/Alamofire.git"</span><span class="p">,</span> <span class="nv">branch</span><span class="p">:</span> <span class="s">"master"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>Alamofire 패키지를 의존성을 추가한 모습입니다. remote 패키지에는 url과 버전정보가, local 패키지에는 이름과 경로가 필요합니다. 버전은 repository의 tag를 기준으로 나뉘어지며 버전 정보 대신에 branch를 지정할 수도 있습니다.</p>
+
+<p><strong>Targets</strong>는 패키지의 빌딩 블록으로 우리가 개발하는 Xcode 프로젝트의 타겟과 유사합니다. 기본적으로 만들고자 하는 target의 이름이 필요하고, target에 포함시키길 소스코드의 경로, 의존성 등을 지정할 수 있습니다. 같은 패키지의 다른 타겟을 의존하는 것 또한 가능합니다.</p>
+
+<p><strong>Products</strong>에는 패키지가 만들어낼 output을 정의합니다. (library or executable) 외부의 패키지는 이 product에 정의된 결과물을 의존하게 되는 것입니다. 여기에선 executable의 타입을 static이나 dynamic으로 지정할 수 있는데 지정하지 않을 경우 swift 패키지가 스스로 알맞는 타입을 지정합니다. 대부분의 경우 static타입으로 의존성이 걸리던데, 프로젝트에 동일한 패키지가 있을 경우 dynamic으로 바뀌는 것이 아닐까 추측합니다.</p>
+
+<p>swift 5.3(Xcode12)이상을 사용한다면 다음과 같은 기능을 추가로 사용할 수도 있습니다.</p>
+
+<ol>
+  <li>패키지에 리소스를 추가할 수 있었습니다. static library에는 리소스를 넣을 수 없어서 별도의 번들을 만들거나 dynamic library로 만들어야 했지만, spm을 사용할 경우 굳이 dynamic type의 의존성을 만들 필요가 없어졌습니다.</li>
+  <li>2019년 애플에서 소개한 새로운 바이너리 프레임워크인 XCFramework를 타겟의 형태로 추가해 사용할 수 있습니다.</li>
+</ol>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackage"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[]),</span>
+        <span class="o">.</span><span class="nf">binaryTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SampleBinaryPackage"</span><span class="p">,</span>
+            <span class="nv">url</span><span class="p">:</span> <span class="s">"https://url/to/sample/remote/xcframework.zip"</span><span class="p">,</span>
+            <span class="nv">checksum</span><span class="p">:</span> <span class="s">"Samle checksum"</span>
+        <span class="p">),</span>
+        <span class="o">.</span><span class="nf">binaryTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SampleBinaryPackage"</span><span class="p">,</span>
+            <span class="nv">path</span><span class="p">:</span> <span class="s">"/sample/path"</span>
+        <span class="p">),</span>    
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackageTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"SamplePackage"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/videos/play/wwdc2018/411">Getting to Know Swift Package Manager</a></p>
+
+<p><a href="https://developer.apple.com/documentation/xcode/bundling-resources-with-a-swift-package">Bundling Resources with a Swift Package</a></p>
+
+<p><a href="https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages">Distributing Binary Frameworks as Swift Packages</a></p>
+
+<p><a href="https://www.swift.org/package-manager/#conceptual-overview">Package Manager</a></p>
+
+<p><a href="https://www.swift.org/getting-started/#using-the-package-manager">Using the Package Manager</a></p>]]></content><author><name>pete</name></author><category term="Build structure" /><category term="dependency" /><category term="xcode" /><category term="swift" /><category term="swift package" /><category term="swift pacakge manager" /><summary type="html"><![CDATA[swift는 많은 플랫폼을 지원하는 언어입니다. 따라서 애플은 다양한 플랫폼에서 동일하게 동작하는 패키지의 필요성을 느끼게 되었고 Swift Package Manager(SPM)을 만들게 되었다고 합니다. 그래서 인지 spm은 자신만의 독자적인 빌드 시스템을 가지고 있습니다. 즉, swift로 개발하고 있다면 spm을 통해 환경에 상관없이 swift 라이브러리를 사용할 수 있습니다.]]></summary></entry><entry><title type="html">[WWDC] Link 속도를 높여보자 (2) - dynamic link</title><link href="https://wannagohome.github.io//blog/build%20structure/link-fast-2/" rel="alternate" type="text/html" title="[WWDC] Link 속도를 높여보자 (2) - dynamic link" /><published>2022-06-16T00:00:00+09:00</published><updated>2022-06-16T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/build%20structure/link-fast-2</id><content type="html" xml:base="https://wannagohome.github.io//blog/build%20structure/link-fast-2/"><![CDATA[<p><br /></p>
+
+<p><a href="/blog/build%20structure/link-fast-1/">static link</a>에 대해 알아보았으니 이번엔 dynmaic link에 대해 알아보도록 하겠습니다.</p>
+
+<p><br /></p>
+
+<h1 id="dynamic-library">Dynamic library</h1>
+
+<p><img src="/blog/assets/images/link_fast/12.png" alt="12" width="80%" class="center" />
+지난 글에서 살펴봤던 static library를 linking하는 경우를 생각해 봅시다. 시간이 지남에 따라 프로그램의 스케일이 커지고 더 많은 라이브러리가 추가되면서 프로그램의 크기도 커질 것입니다. 결국 빌드 과정중에 static linking에 걸리는 시간도 점점 증가한다는 것을 의미합니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/13.png" alt="13" width="85%" class="center" />
+그렇다면 이렇게 바꿔보는 것은 어떨까요? ar을 ld로 변경하였습니다. 그리고 라이브러리의 output또한 executable한 바이너리로 바뀌었습니다. 이게 바로 90년대에 dynamic library가 등장하던 시절의 모습입니다. 줄여서 “dylibs”라고 부르기도 하죠.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/14.png" alt="14" width="80%" class="center" />
+어떻게 프로그램의 크기를 줄인걸까요? 핵심은 static linker가 dynamic library에 대한 linking을 다르게 처리하는데 있습니다. linker는 dynamic library의 코드를 복사하는 대신 일종의 약속을 세겨넣습니다. dynamic library에서 사용한 symbol 이름과 런타임 시의 라이브러리의 경로를 기록하는 것입니다. 쉽게 말해 dynamic library의 참조를 남깁니다.</p>
+
+<p><br /></p>
+
+<p>이렇게 하면 얻을 수 있는 이점은 무엇일까요? 바로 프로그램의 사이즈를 작게 유지 할 수 있다는 것입니다. 단순히 우리가 작성한 코드와 런타임에 필요한 dynamic library에 대한 정보만 있으면 될 뿐이니까요. 프로그램은 더이상 라이브러리 코드의 복사본을 들고 있을 필요도 없으며, static link 시간은 우리가 작성한 코드의 크기에만 영향을 받을 뿐 얼마나 많은 dylib을 가지고 있는지와는 무관해 집니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/15.png" alt="15" width="80%" class="center" />
+게다가 가상 메모리 시스템을 적극적으로 활용할 수 있는 환경이 갖추어지게 됩니다. 서로 다른 프로세스에서 같은 dynamic library를 사용하면 가상메모리는 RAM의 같은 페이지를 재사용하여 해당 dylib을 사용하는 모든 프로세스가 공유하도록 하는 것입니다.</p>
+
+<p><br /></p>
+
+<p>그렇다면 dynamic library를 사용하는데 드는 비용은 어떤것들이 있을까요? dylib은 프로그램의 빌드 시간을 줄여주는 반면에 launch time을 증가시킵니다. 왜냐하면 launching 과정에서 더이상 하나의 프로그램 파일만을 로드하지 않게 되기 떄문입니다. 모든 dylib도 함께 로드되어 우리의 프로그램과 연결되어야 합니다.</p>
+
+<p>다음으로 dynamic library를 사용하는 프로그램은 페이지 구조가 지저분해 집니다. static library의 경우 linker는 모든 static library의 모든 global들을 executable의 동일한 DATA 페이지에 배치합니다. 하지만 dylib은 라이브러리마다의 DATA페이를 각각 가지고 있습니다.</p>
+
+<p>마지막 비용은 dynamic linker입니다. 프로그램에 남겨놓은 약속을 기억하시나요? 이 약속을 지키기위한 무언가가 런타임에 필요해 지게 됩니다. 그게 바로 dyld, 즉 dynamic linker 입니다. <!--  dynamic linking이 런타임에 어떻게 동작하는지 살펴보도록 하겠습니다. --></p>
+
+<!-- 
+<br/>
+
+# Dynamic linker
+
+executable 바이너리는 TEXT, DATA, LINKEDIT과 같은 세그먼트로 나뉩니다. 세그먼트는 언제나 페이지의 배수 만큼 존재하며 각 세그먼트마다 다른 권한을 가지고 있습니다. 예를들어 TEXT 세그먼트는 실행 권한을 가지고 있습니다. 이는 CPU가 페이지의 바이트를 기계어 명령어로 취급할 수 있음을 의미합니다.
+
+런타임 시 dyld는 각 세그먼트의 권한으로 실행 파일을 메모리에 mmap()해야 합니다.
+-->
+
+<p><br /></p>
+
+<h1 id="best-practice">Best Practice</h1>
+
+<p>지금까지 살펴본 dynamic linking의 best practice는 어떻게 될까요? dyld는 이미 최대한으로 가속화되어 있기 때문에 우리가 통제할 수 있는 것은 사요하는 dylib의 수 입니다. dylib이 많아질 수록 dyld의 로드 작업은 많아지므로 적은 수의 dylib만을 사용하길 권장합니다.</p>
+
+<p>static initializer를 제거하거나 최적화 하기시 바랍니다. 특히 static intializer에서는 IO나 networking을 일으키지 않는것이 좋습니다. 몇 ms 보다 올래걸리는 작업은 생성자에서 이루어져서는 안됩니다.</p>
+
+<p>static library와 dynamic library를 사용하는 것 사이에 적절한 지점을 찾기 바랍니다. 너무 많은 static library는 여러분의 개발 속도를 늦추고, 너무 많은 dynamic library는 lauch time을 늘려 사용자 경험을 해칩니다. 올해 이루어진 ld64의 성능 개선으로 인해 두 의존성 사이의 적정점이 더 많은 static library를 사용하는 쪽으로 기울게 될 수도 있을 것입니다.</p>
+
+<p>마지막으로 deployment tartget을 13.4 이상으로 설정함으로써 dyld의 성능 개선(chained fixup / 생략된 부분) 효과를 볼 수 있을 것입니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/videos/play/wwdc2022/110362">Link fast: Improve build and launch times</a></p>]]></content><author><name>pete</name></author><category term="Build structure" /><category term="build" /><category term="xcode" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[WWDC] Link 속도를 높여보자 (1) - static link</title><link href="https://wannagohome.github.io//blog/build%20structure/link-fast-1/" rel="alternate" type="text/html" title="[WWDC] Link 속도를 높여보자 (1) - static link" /><published>2022-06-16T00:00:00+09:00</published><updated>2022-06-16T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/build%20structure/link-fast-1</id><content type="html" xml:base="https://wannagohome.github.io//blog/build%20structure/link-fast-1/"><![CDATA[<p><br /></p>
+
+<p>Linking 과정에서 일어나는 일에대해 알아봄으로써 어떻게 Linking 속도를 높일수 있는지 배워봅시다.</p>
+
+<p><br /></p>
+
+<h1 id="linking-이란">Linking 이란?</h1>
+
+<p>우리가 작성한 코드와 library나 framework와 같은 외부 의존성을 함께 사용하기 위해선 linker가 필요합니다. linking은 크게 두 가지 종류로 나뉘는데, 먼저 static linking은 build time에 일어나는데 build time과 app size에 영향을 주게 됩니다. 반면 dynamic linking은 앱이 실행될 때 일어나며, launch time에 영향을 주게 됩니다.</p>
+
+<p><br /></p>
+
+<h1 id="static-linking">Static Linking</h1>
+
+<p>Static linking에 대해 더 자세히 알아보기 전에 과거로 돌아가 history를 살펴보도록 합시다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/1.png" alt="1" width="80%" class="center" /></p>
+
+<p>옛날 옛적 프로그램은 매우 단순했습니다. 하나의 소스파일만이 있었고 그 소스파일을 컴파일해 실행가능한 프로그램을 만들기만 하면 되었죠. 하지만 시간이 지나면서 모든 소스코드를 한 파일에 몰아넣기엔 어렵게 되었고, 여러 파일이 필요하게 됩니다. 여러개의 소스파일은 어떻게 빌드해야 할까요?</p>
+
+<p>소스파일을 나누고자 하는 시도는 단지 파일이 거대해 지는 것 뿐만이 아니라 모든 함수를 다시 컴파일 하는 것을 피하기 위해서 이기도 했습니다. 따라서 컴파일러를 두 부분으로 나누게 됩니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/2.png" alt="2" width="90%" class="center" /></p>
+
+<p>첫 번째 부분은 소스코드를 relocatable 한 object 라는 중간 파일로 컴파일 합니다. 그리고 두 번째 부분에서는 첫 번째의 결과물인 오브젝트 파일을 읽어 executable로 만듭니다. 그리고 여기서 두 번째 부분을 ld 혹은 static linker라고 부릅니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/3.png" alt="3" width="85%" class="center" /></p>
+
+<p>소프트웨어가 발전함에 따라 사람들은 많은 .o(오브젝트) 파일을 만들어 사용했고, 점차 번거로워 지기 시작했습니다. 이 때 누군가가 “이 많은 오브젝트 파일들을 라이브러리로 패키징하는게 낫지 않을까?” 하는 생각을 떠올렸는데, 당시엔 ‘ar’ 이라고 하는 파일들을 bundling 하는 아카이빙 도구가 표준처럼 사용되던 시기였습니다. 그러다 보니 workflow가 다음과 같이 변하게 되는데, 오브제젝트 파일들을 ar로 아카이브 하는 과정이 추가된 것입니다. 그리고 링커는 아카이브 파일에서 오브젝트 파일을 직접 읽어낼 수 있도록 개선되었습니다.</p>
+
+<p><br /></p>
+
+<p>이 방법은 공통의 코드를 공유하는 방법의 놀라운 발전이었습니다. 당시에 단순하게 archive혹은 library라도 불리우던 것이 지금은 static libarary라도 불리게 된것입니다.</p>
+
+<p>하지만 라이브러리에 있는 수천개의 함수들이 그대로 복사되어 들어오면서 프로그램의 크기 또한 비대해졌습니다. 실제로는 그 많은 함수들 중 단 몇개만을 사용하는데 말이지요. 따라서 최적화 과정이 추가되게 됩니다. linker는 static library에 모든 오브젝트 파일을 끌어오지 않고 undefined symbol을 resolve 하는 경우에만 끌어오도록 하는 것입니다. 이는 개발자들이 C의 거대한 표준 라이브러리인 libc.a 를 동일하게 link하면서도 프로그램에 실제 필요한 부분만 사용할 수 있게 해주었습니다. 그리고 이 모델은 지금까지도 사용되고 있습니다.</p>
+
+<p>하지만 앞서 설명한 ‘선택적 로딩’은 개발자들을 햇갈리게 할 때가 있어서, 분명한 이해를 돕기 위해 간단한 예시를 들어보겠습니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/4.png" alt="4" width="85%" class="center" /></p>
+
+<p>main.c 파일에는 foo 함수를 호출하는 main 함수가 있습니다. foo.c 파일에는 bar 함수를 호출하는 foo 함수가 있습니다. bar.c 에는 bar 함수의 구현부가 있으며 사용되지 않는 함수인 unused 함수도 가지고 있습니다. 마지막으로 baz.c 에는 undef 함수를 호출하는 baz 함수가 있습니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/5.png" alt="5" width="85%" class="center" /></p>
+
+<p>이제 이들 각각을 오브젝트 파일로 컴파일 해보겠습니다. foo, bar, undef 에는 회색 표시가 없네요. undefined symbol이기 때문입니다. undefinded symbol은 symbol의 정의 아닌 사용(참조)을 뜻합니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/6.png" alt="6" width="85%" class="center" /></p>
+
+<p>이제 bar.o 와 baz.o 를 static library로 묶고, 나머지 두개의 오브젝트 파일과 static library를 link 해보겠습니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/7.png" alt="7" width="85%" class="center" /></p>
+
+<p>linker는 command line order에 따라 동작합니다. 먼저 main.o 찾아 로드하고 main 함수의 정의를 찾습니다. symbol table에 올라가 있는게 보이시나요? 이때 main 함수만 찾는게 아니라 main 함수가 undefined 상태인 foo를 가지고 있다는 것 또한 찾게됩니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/8.png" alt="8" width="85%" class="center" /></p>
+
+<p>linker는 command line의 다음 파일을 파싱하는데 여기에선 foo.o군요. foo.o는 foo함수의 정의를 가지고 있고 이는 foo가 더이상 undefined 상태가 아니게 된다는 것입니다. 여기서 멈추지 않고 foo.o를 로딩하면서 bar라는 undefined symbol이 추가됩니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/9.png" alt="9" width="85%" class="center" /></p>
+
+<p>이제 command line에 있는 모든 오브젝트 파일들이 로드되었습니다. linker는 아직 남아있는 undefined symbol이 있는지 확인하는데 이 상황에선 bar가 되겠군요. 이제 linker는 남아있는 undefined symbol의 참조를 찾기 위해 command line의 라이브러리 들을 살펴보기 시작합니다. static library에서 bar symbol을 정의하고 있는 bar.o를 찾을 수 있군요. 이제 linker는 archive에서 bar.o를 로드합니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/10.png" alt="10" width="85%" class="center" /></p>
+
+<p>이 시점에서 더이상 남아있는 undefined symbol이 없으니 라이브러리를 읽는 것을 중단하고 다음 단계로 넘어갑니다. 프로그램에 포함될 모든 함수와 데이터에 주소를 할당하는 것입니다. 그리고 나서 모든 함수와 데이터들을 output 파일로 복사합니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/11.png" alt="11" width="85%" class="center" /></p>
+
+<p>드디어 최종 결과물인 프로그램이 나왔습니다. baz.o는 분명 static library에 있지만 프로그램에는 포함되지 않았습니다. linker가 static library를 선택적으로 로드했기 때문입니다.</p>
+
+<p>이제 static linking과 static library에 대해 알았으니 ld64라고 불리우는 애플의 static linker의 개선점에 대해 알아보겠습니다.</p>
+
+<p><br /></p>
+
+<h1 id="ld64-최적화">ld64 최적화</h1>
+
+<p>애플은 많은 요구에 따라 ld64 최적화 작업을 진행했고, linker는 최대 2배의 속도를 내게 될것이라고 합니다. linker의 작업을 병렬적으로 진행할 수 있는 부분들을 찾아내었고 여러개의 코어를 활용하는 것으로 linking속도를 개선한 것입니다. 속도를 높이기 위해 개선된 부분은 다음을 포함합니다.</p>
+
+<ul>
+  <li>input파일의 내용(content)을 output파일로 복사</li>
+  <li>LINKEDIT의 서로 다른 부분을 병렬적으로 빌드</li>
+  <li>UUID 계산과 코드 서명 해싱을 병렬적으로 처리</li>
+  <li>exports-trie builder 알고리즘 개선</li>
+  <li>UUID(SHA256) 계산 가속
+    <ul>
+      <li>crypto 라이브러리의 최신 버전을 채택하여 하드웨어 가속을 향상</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h1 id="linker-속도-끌어올리기">linker 속도 끌어올리기</h1>
+
+<p>linker의 성능을 향상시키는 작업을 하는 과정에서 몇몇 앱들의 configuration이 link time에 영향을 준다는 것을 알게 되었다고 합니다. 어떻게 어플리케이션 개발자인 우리가 link time을 개선시킬 수 있을지 알아봅시다. 총 다섯 가지 입니다. 언제 static library를 사용해야 하는지, link time에 영향을 주는 세가지 옵션(-all_load or force_load, -no_exported_symbols, -no_deduplicate), 몇 가지 static linking 동작에 대해서 입니다.</p>
+
+<p><br /></p>
+
+<h1 id="static-library는-언제-사용해야-할까">static library는 언제 사용해야 할까?</h1>
+
+<p>만약 static library로 빌드된 소스 파일을 사용한다면 빌드 타임이 늦춰지는 것을 경험하게 될 것입니다. 왜냐하면 파일에 변경이 일어난 후(컴파일 되고 난 후) content table을 포함한 모든 static library는 rebuild되어야 하기 때문이죠. 따라서 static library는 변경이 잘 일어나지 않는 안정된 코드에 사용하는 것이 적합하다고 할 수 있습니다. 활발하게 개발중인 코드를 static library로 부터 빼내어 build time을 줄이는 것을 고려해 보시기 바랍니다.</p>
+
+<p>앞서서 우리는 선택적 로딩에 대해 살펴본바 있습니다. 선택적 로딩은 앱의 사이즈를 줄여주지만 linker의 속도를 늦춘다는 단점이 있습니다. 빌드를 반복가능하게 만들고, 전통적인 static library semantic을 따르기 위해 linker는 정해진 순서대로 프로세싱 해야 하기 때문입니다. 이는 ld64의 병렬화를 통한 성능 개선의 일부는 static library에 적용될 수 없다는 것을 의미합니다. 하지만 이런 역사적 동작을 따를 필요가 없다면 linker option을 사용해 빌드 속도를 높일 수 있습니다.</p>
+
+<p><br /></p>
+
+<h1 id="-all_load">-all_load</h1>
+
+<p>그중 하나가 -all_load 입니다. 이 옵션은 linker가 모든 오브젝트 파일을 맹목적으로 로드하게 합니다. 이 옵션은 라이브러리의 대부분을 사용하게 될 때 유용합니다. -all_load 옵션 사용은 linker가 static library의 모든 컨텐트를 병렬적으로 파싱하는 것을 허용하게 합니다.</p>
+
+<p>하지만 만약 동일한 symbol을 구현하는 다수의 static library를 사용하고, static library의 command line order에 의존하는 트릭을 사용할 경우 이 옵션 사용은 적합하지 않습니다. 왜냐하면 linker는 모든 구현을 로드하고, 일반적인 static linking mode에서 발견한 symbol semantic을 반드시 얻는 것이 아니기 때문입니다.</p>
+
+<p>또 다른 단점으로는 사용되지 않는 코드가 프로그램에 들어갈 것이기 때문에 프로그램이 커지게 됩니다. 이를 보안하기 위해 -dead_strip옵션을 사용할 수도 있습니다. 이 옵션은 linker로 하여금 도달 불가능한 코드를 제거하게 합니다. 속도가 빠른 dead stripping 알고리즘을 이용해 output파일의 크기를 줄임으로써 비용의 대가를 스스로 지불하게 하는 것입니다. 만약 -all_load와 -dead_strip 옵션을 사용하고자 한다면 옵션이 추가될 때와 아닐때의 linking time을 비교해보시기 바랍니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/videos/play/wwdc2022/110362">Link fast: Improve build and launch times</a></p>]]></content><author><name>pete</name></author><category term="Build structure" /><category term="build" /><category term="xcode" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[WWDC] Xcode build를 시작하면 어떤일이 벌어질까? - (3)</title><link href="https://wannagohome.github.io//blog/build%20structure/what_happens_when_xcode_build_start-3/" rel="alternate" type="text/html" title="[WWDC] Xcode build를 시작하면 어떤일이 벌어질까? - (3)" /><published>2022-06-15T00:00:00+09:00</published><updated>2022-06-15T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/build%20structure/what_happens_when_xcode_build_start-3</id><content type="html" xml:base="https://wannagohome.github.io//blog/build%20structure/what_happens_when_xcode_build_start-3/"><![CDATA[<p><img src="/blog/assets/images/what_happens_when_xcode_build_start/1.png?raw=true" alt="1" /></p>
+
+<p><br /></p>
+
+<p>소스코드가 오브젝트 파일로 바뀌는 과정을 먼저 살펴보려는 계획이었으나, 당장 필요한 지식을 습득하기 위해 Linker영역에서 일어나는 일들을 먼저 알아보겠습니다.</p>
+
+<p><br /></p>
+
+<h1 id="linker">Linker</h1>
+
+<p>오브젝트들이 어떻게 링킹되고, executable로 만들어지는 지 알아보기 위해선 먼저 Linker에 대해 알아야 하겠습니다.</p>
+
+<p>Linker는 빌드 과정중 가장 마지막 과정에 동작합니다. 크게 두가지 input을 받아 link하고 executable을 만들어 내는데 clang과 swiftc로 만들어진 오브젝트 파일(.o)과, .dylib, .tbd, .a와 같은 라이브러리 파일입니다.</p>
+
+<p>여기서 중요한 것은 링커는 소스를 생성해내지 않는 다는 것입니다. Linker는 소스를 이동시키도 이어 붙일 뿐 코드를 생성해 내지 않습니다.</p>
+
+<p><br /></p>
+
+<h1 id="symbol">Symbol</h1>
+
+<p>Symbol은 단순하게 코드 조각을 참조하기 위한 이름입니다. 이 코드 조각는 또 다른 symbol을 참조할 수도 있습니다. 함수가 또 다른 함수를 호출 하는 것 에서 이런 상황을 볼 수 있습니다.</p>
+
+<p>모든 코드 조각은 symbol로 나타내어 집니다. 앞으로 살펴볼 예시의 모든 함수도 마찬가지 입니다. 코드 조각은 undefined symbol을 참조 할 수 있는데 예를들어, 오브젝트 파일이 다른 오브젝트 파일의 함수를 참조할 때 그리고 그 참조된 오브젝트 파일이 undefined일 때, 링커가 undefined symbol들을 찾아 링킹 합니다.</p>
+
+<p>Symbol은 링커 동작에 영향을 주는 속성을 가질 수도 있습니다. 예를 들어 weak sybol의 경우 사용가능한 API Level을 제한시킬 수 있습니다.</p>
+
+<p><br /></p>
+
+<h1 id="library">Library</h1>
+
+<p>Library는 빌드하고자 하는 타겟의 일부가 아닌 symbol을 정의하는 파일입니다. Library에는 몇가지 종류가 있는데</p>
+
+<h3 id="dylib-dynamic-library">Dylib: Dynamic library</h3>
+<p>dynamic library는 executable이 이용할 수 있도록 코드와 데이터 조각을 노출 시키는 Mach-O 파일 이라고 할 수 있습니다. dymaic libaray는 system의 일부의 형태로 배포가 되는데, apple에서 제공하는 대부분의 framework는 dynamic library 형태로 제공되고 있습니다.</p>
+
+<h3 id="tbd-text-based-dylib-stub">TBD: Text Based Dylib Stub</h3>
+<p>이름 그대로 텍스트 기반의 dynamic library stub 파일 입니다. 우리는 여러가지 프레임 워크를 사용하지만 사이즈가 너무 크기 때문에 그 안의 모든 코드를 복사해 오는 것을 원하지는 않습니다. 심지어 컴파일러와 링커는 그 구현에 대해 알아야할 필요도 없습니다. 그저 실행 할 수만 있으면 될 뿐이죠. 따라서 TBD라는 dylib stub을 만들어 symbol의 body를 모두 지우고 이름만 가지고 있는 것입니다.</p>
+
+<h3 id="static-archive">Static archive</h3>
+<p>Static archive(혹은 static library)는 오브젝트 파일의 모음(collection or archive)일 뿐입니다. .a format은 UNIX에서 더 강력한 format이 나오기 전에 사용되던 archive format입니다. 하지만 당시 컴파일러와 링커가 이 foramt을 native하게 읽을 수 있었기 때문에 계속 사용되고 있을 뿐입니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/videos/play/wwdc2018/415">Behind the Scenes of the Xcode Build Process</a></p>]]></content><author><name>pete</name></author><category term="Build structure" /><category term="build" /><category term="xcode" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[doc] Mach-O에 대해 알아보자 -1</title><link href="https://wannagohome.github.io//blog/build%20structure/about-Mach-O-1/" rel="alternate" type="text/html" title="[doc] Mach-O에 대해 알아보자 -1" /><published>2022-06-14T00:00:00+09:00</published><updated>2022-06-14T00:00:00+09:00</updated><id>https://wannagohome.github.io//blog/build%20structure/about-Mach-O-1</id><content type="html" xml:base="https://wannagohome.github.io//blog/build%20structure/about-Mach-O-1/"><![CDATA[<p><br /></p>
+
+<p>Mach-O는 MacOS 바이너리의 executable format 입니다. 그리고 executable format은 메모리에 올리가는 바이너리 파일의 코드와 데이터의 순서를 결정합니다. 이 때, 코드와 데이터의 순서는 메모리 사용과 페이징 활동에 영향을 미치므로 프로그램 성능에 직접적인 영향을 미치게 됩니다.</p>
+
+<p>프로그램을 만들기 위해서는 소스코드를 오브젝트 파일로 만들어야 합니다. 오브젝트 파일은 executable 코드 혹은 static library로 패키징 되는데, MacOS는 이렇게 소스코드를 어플리케이션이나 라이브러리로 만드는 도구를 제공합니다.</p>
+
+<h2 id="types-of-mach-o-file">Types of Mach-O File</h2>
+<ul>
+  <li><strong>Intermediate object file</strong>
+    <ul>
+      <li>이 파일은 큰 오브젝트 파일의 기본적인 building block일 뿐 최종 결과물의 형태는 아닙니다. 보통의 경우 컴파일러는 하나의 input 소스 코드 파일로 부터 하나의 오브젝트 파일을 만들고, static linker를 사용해 오브젝트 파일들을 dynamic linker로 결합합니다.</li>
+    </ul>
+  </li>
+  <li><strong>Dynamic shared library</strong>
+    <ul>
+      <li>dynamic library는 어플리케이션이 동적으로 참조하고 있고, 앱이 실행 될때 dynamic linker에 의해 로드되는 executable code의 모듈을 포함하고 있습니다.</li>
+    </ul>
+  </li>
+  <li><strong>Framework</strong>
+    <ul>
+      <li>MacOS에서 Framework는 특정한 구조를 따르는 디렉토리를 이야기 합니다. shared library와 여러 리소스들을 포함하고 있습니다.</li>
+    </ul>
+  </li>
+  <li><strong>Static archive library</strong>
+    <ul>
+      <li>static library는 static linker가 빌드 타임에 어플리케이션에 추가할 수 있는 코드의 모듈을 포함하고 있습니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/library/archive/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html">Overview of the Mach-O Executable Format</a>
+<a href="https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/MachOTopics/1-Articles/building_files.html#//apple_ref/doc/uid/TP40001828-SW1">Building Mach-O Files</a>
+<a href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPFrameworks/Concepts/WhatAreFrameworks.html#//apple_ref/doc/uid/20002303-BBCEIJFI">What are Frameworks?</a></p>]]></content><author><name>pete</name></author><category term="Build structure" /><category term="build" /><category term="xcode" /><summary type="html"><![CDATA[]]></summary></entry></feed>

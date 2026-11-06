@@ -1,0 +1,646 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[WWDC] Link 속도를 높여보자 (2) - dynamic link - 집에 빨리 가기위한 몸부림의 기록</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="pete">
+  
+  <meta property="article:author" content="pete">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="집에 빨리 가기위한 몸부림의 기록">
+<meta property="og:title" content="[WWDC] Link 속도를 높여보자 (2) - dynamic link">
+<meta property="og:url" content="https://wannagohome.github.io//blog/build%20structure/link-fast-2/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-06-16T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://wannagohome.github.io//blog/build%20structure/link-fast-2/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "pete",
+      "url": "https://wannagohome.github.io//blog/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<meta name="robots" content="noindex, nofollow">
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          집에 빨리 가기위한 몸부림의 기록
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://wannagohome.github.io//blog/">
+        <img src="/blog/assets/images/profile.jpg" alt="pete" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://wannagohome.github.io//blog/" itemprop="url">pete</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>work hard to work less</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Contact</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[WWDC] Link 속도를 높여보자 (2) - dynamic link">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-06-16T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://wannagohome.github.io//blog/build%20structure/link-fast-2/" class="u-url" itemprop="url">[WWDC] Link 속도를 높여보자 (2) - dynamic link
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<p><a href="/blog/build%20structure/link-fast-1/">static link</a>에 대해 알아보았으니 이번엔 dynmaic link에 대해 알아보도록 하겠습니다.</p>
+
+<p><br /></p>
+
+<h1 id="dynamic-library">Dynamic library</h1>
+
+<p><img src="/blog/assets/images/link_fast/12.png" alt="12" width="80%" class="center" />
+지난 글에서 살펴봤던 static library를 linking하는 경우를 생각해 봅시다. 시간이 지남에 따라 프로그램의 스케일이 커지고 더 많은 라이브러리가 추가되면서 프로그램의 크기도 커질 것입니다. 결국 빌드 과정중에 static linking에 걸리는 시간도 점점 증가한다는 것을 의미합니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/13.png" alt="13" width="85%" class="center" />
+그렇다면 이렇게 바꿔보는 것은 어떨까요? ar을 ld로 변경하였습니다. 그리고 라이브러리의 output또한 executable한 바이너리로 바뀌었습니다. 이게 바로 90년대에 dynamic library가 등장하던 시절의 모습입니다. 줄여서 “dylibs”라고 부르기도 하죠.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/14.png" alt="14" width="80%" class="center" />
+어떻게 프로그램의 크기를 줄인걸까요? 핵심은 static linker가 dynamic library에 대한 linking을 다르게 처리하는데 있습니다. linker는 dynamic library의 코드를 복사하는 대신 일종의 약속을 세겨넣습니다. dynamic library에서 사용한 symbol 이름과 런타임 시의 라이브러리의 경로를 기록하는 것입니다. 쉽게 말해 dynamic library의 참조를 남깁니다.</p>
+
+<p><br /></p>
+
+<p>이렇게 하면 얻을 수 있는 이점은 무엇일까요? 바로 프로그램의 사이즈를 작게 유지 할 수 있다는 것입니다. 단순히 우리가 작성한 코드와 런타임에 필요한 dynamic library에 대한 정보만 있으면 될 뿐이니까요. 프로그램은 더이상 라이브러리 코드의 복사본을 들고 있을 필요도 없으며, static link 시간은 우리가 작성한 코드의 크기에만 영향을 받을 뿐 얼마나 많은 dylib을 가지고 있는지와는 무관해 집니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/15.png" alt="15" width="80%" class="center" />
+게다가 가상 메모리 시스템을 적극적으로 활용할 수 있는 환경이 갖추어지게 됩니다. 서로 다른 프로세스에서 같은 dynamic library를 사용하면 가상메모리는 RAM의 같은 페이지를 재사용하여 해당 dylib을 사용하는 모든 프로세스가 공유하도록 하는 것입니다.</p>
+
+<p><br /></p>
+
+<p>그렇다면 dynamic library를 사용하는데 드는 비용은 어떤것들이 있을까요? dylib은 프로그램의 빌드 시간을 줄여주는 반면에 launch time을 증가시킵니다. 왜냐하면 launching 과정에서 더이상 하나의 프로그램 파일만을 로드하지 않게 되기 떄문입니다. 모든 dylib도 함께 로드되어 우리의 프로그램과 연결되어야 합니다.</p>
+
+<p>다음으로 dynamic library를 사용하는 프로그램은 페이지 구조가 지저분해 집니다. static library의 경우 linker는 모든 static library의 모든 global들을 executable의 동일한 DATA 페이지에 배치합니다. 하지만 dylib은 라이브러리마다의 DATA페이를 각각 가지고 있습니다.</p>
+
+<p>마지막 비용은 dynamic linker입니다. 프로그램에 남겨놓은 약속을 기억하시나요? 이 약속을 지키기위한 무언가가 런타임에 필요해 지게 됩니다. 그게 바로 dyld, 즉 dynamic linker 입니다. <!--  dynamic linking이 런타임에 어떻게 동작하는지 살펴보도록 하겠습니다. --></p>
+
+<!-- 
+<br/>
+
+# Dynamic linker
+
+executable 바이너리는 TEXT, DATA, LINKEDIT과 같은 세그먼트로 나뉩니다. 세그먼트는 언제나 페이지의 배수 만큼 존재하며 각 세그먼트마다 다른 권한을 가지고 있습니다. 예를들어 TEXT 세그먼트는 실행 권한을 가지고 있습니다. 이는 CPU가 페이지의 바이트를 기계어 명령어로 취급할 수 있음을 의미합니다.
+
+런타임 시 dyld는 각 세그먼트의 권한으로 실행 파일을 메모리에 mmap()해야 합니다.
+-->
+
+<p><br /></p>
+
+<h1 id="best-practice">Best Practice</h1>
+
+<p>지금까지 살펴본 dynamic linking의 best practice는 어떻게 될까요? dyld는 이미 최대한으로 가속화되어 있기 때문에 우리가 통제할 수 있는 것은 사요하는 dylib의 수 입니다. dylib이 많아질 수록 dyld의 로드 작업은 많아지므로 적은 수의 dylib만을 사용하길 권장합니다.</p>
+
+<p>static initializer를 제거하거나 최적화 하기시 바랍니다. 특히 static intializer에서는 IO나 networking을 일으키지 않는것이 좋습니다. 몇 ms 보다 올래걸리는 작업은 생성자에서 이루어져서는 안됩니다.</p>
+
+<p>static library와 dynamic library를 사용하는 것 사이에 적절한 지점을 찾기 바랍니다. 너무 많은 static library는 여러분의 개발 속도를 늦추고, 너무 많은 dynamic library는 lauch time을 늘려 사용자 경험을 해칩니다. 올해 이루어진 ld64의 성능 개선으로 인해 두 의존성 사이의 적정점이 더 많은 static library를 사용하는 쪽으로 기울게 될 수도 있을 것입니다.</p>
+
+<p>마지막으로 deployment tartget을 13.4 이상으로 설정함으로써 dyld의 성능 개선(chained fixup / 생략된 부분) 효과를 볼 수 있을 것입니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/videos/play/wwdc2022/110362">Link fast: Improve build and launch times</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#build" class="page__taxonomy-item p-category" rel="tag">build</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#xcode" class="page__taxonomy-item p-category" rel="tag">xcode</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/#build-structure" class="page__taxonomy-item p-category" rel="tag">Build structure</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-06-16T00:00:00+09:00">June 16, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BWWDC%5D+Link+%EC%86%8D%EB%8F%84%EB%A5%BC+%EB%86%92%EC%97%AC%EB%B3%B4%EC%9E%90+%282%29+-+dynamic+link%20https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Flink-fast-2%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Flink-fast-2%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Flink-fast-2%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/build%20structure/link-fast-1/" class="pagination--pager" title="[WWDC] Link 속도를 높여보자 (1) - static link
+">이전</a>
+    
+    
+      <a href="/blog/build%20structure/swift-package/" class="pagination--pager" title="Swift Package Manager에 대해 알아보자
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/tuist-what-i-learned/" rel="permalink">Tuist를 적용하며 배운것들
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/swift-concurrency-1/" rel="permalink">Swift 동시성 프로그래밍 tutorial - (1)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.
+Async/await, Async/Await: Sequences, ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/object-oriented-programming-1/" rel="permalink">객체지향적인 코드란 무엇인가?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" rel="permalink">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Contact:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 pete. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

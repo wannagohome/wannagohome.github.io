@@ -1,0 +1,648 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[WWDC] Xcode build를 시작하면 어떤일이 벌어질까? - (1) - 집에 빨리 가기위한 몸부림의 기록</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="pete">
+  
+  <meta property="article:author" content="pete">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="집에 빨리 가기위한 몸부림의 기록">
+<meta property="og:title" content="[WWDC] Xcode build를 시작하면 어떤일이 벌어질까? - (1)">
+<meta property="og:url" content="https://wannagohome.github.io//blog/build%20structure/what_happens_when_xcode_build_start-1/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-06-01T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://wannagohome.github.io//blog/build%20structure/what_happens_when_xcode_build_start-1/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "pete",
+      "url": "https://wannagohome.github.io//blog/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<meta name="robots" content="noindex, nofollow">
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          집에 빨리 가기위한 몸부림의 기록
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://wannagohome.github.io//blog/">
+        <img src="/blog/assets/images/profile.jpg" alt="pete" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://wannagohome.github.io//blog/" itemprop="url">pete</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>work hard to work less</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Contact</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[WWDC] Xcode build를 시작하면 어떤일이 벌어질까? - (1)">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-06-01T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://wannagohome.github.io//blog/build%20structure/what_happens_when_xcode_build_start-1/" class="u-url" itemprop="url">[WWDC] Xcode build를 시작하면 어떤일이 벌어질까? - (1)
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><img src="/blog/assets/images/what_happens_when_xcode_build_start/1.png?raw=true" alt="1" /></p>
+
+<p><br /></p>
+
+<p>먼저는 Xcode의 Build Process에 대해 살펴보고, 다음으로 컴파일러 영역으로 넘어가 소스코드가 어떻게 오브젝트 파일로 빌드되는지 살펴보겠습니다. 마지막으로 linker에 대해 살펴보며 심볼과 소스코드의 상관관계, 컴파일러를 통해 만들어진 오브젝트 파일들로 실행파일로 만들어내는 과정에 대해 살펴 보겠습니다.</p>
+
+<p><br /></p>
+
+<h1 id="xcode-build-system">Xcode Build System</h1>
+
+<p><br /></p>
+
+<h3 id="build-process">Build Process</h3>
+
+<p>앱을 빌드하는데는 수많은 과정들이 필요하고 대부분의 프로세스는 command line tool로 수행하게 됩니다. 이 툴들은 특정 argument를 가지고 특정 순서를 따라 실행되어야만 하는데, build system은 이 과정들을 자동화 해줍니다.</p>
+
+<p>잠시 빌드 과정의 순서에 대해 이야기 해보자면, 이 순서는 읽어야할 input과 만들어 내야할 output과 같은 depedency 정보에 의해 결정됩니다. 예를 들어 컴파일 작업은 *.m과 같은 소스코드 파일을 input으로 받아 *.o와 같은 오브젝트 파일을 output으로 만들어 내죠. 이와 비슷하게 linker 작업도 여려개의 오브젝트 파일들을 input으로 받고, 실행 파일 혹은 libary 형태로 output을 만들어냅니다.</p>
+
+<p>이런 일련의 작업 과정은 다음과 같이 간단한 그래프로 나타낼 수 있는데, 이 때 각 작업들은 서로 독립적으로 수행됩니다. 그리고 다시 정리해 보자면 build system은 dependency 정보를 가지고 작업의 순서를 결정합니다.
+<img src="/blog/assets/images/what_happens_when_xcode_build_start/2.png?raw=true" alt="2" /></p>
+
+<p><br /></p>
+
+<p>지금까지 build 프로세스란 어떤것인지 간랴갛게 살펴보았습니다. 이제 조금 구체적으로 어떻게 동작하는지 살펴보죠.</p>
+
+<p><img src="/blog/assets/images/what_happens_when_xcode_build_start/3.png?raw=true" alt="3" /></p>
+
+<p>빌드를 시작하면 build system은 Xcode 프로젝트 파일로 부터 프로젝트에 포함된 파일, 타겟 의존 관계등을 읽어내고 directed graph라는 tree형태의 구조를 만들어 냅니다. 이 그래프는 input, output파일과 process하기 위한 작업들 사이의 모든 의존관계들을 나타냅니다. 이를 통해 어던 순서로 작업이 수행되어야 하며, 어떤 작업들이 평행하기 수행될 수 있는지를 파악하고, 작업을 수행합니다.</p>
+
+<p><br /></p>
+
+<h3 id="incremental-build">Incremental Build</h3>
+
+<p>프로젝트를 빌드는 지금까지 살펴본것과 같이 수많은 작업들을 필요로 하며, 프로젝트가 커질 수록 빌드를 위한 시간을 길어질것입니다. 이런 프로젝트 빌드를 매번 반복하는 것은 너무나 많은 시간을 소요하게 되는데, 이런 비효율 성을 줄이고자 build graph에 꼭 필요한 부분만 빌드하는 incremental build라는 기능을 제공합니다.</p>
+
+<p>build graph의 각 작업들은 각자의 서명을 가지고 있는데 build system은 이 서명을 과거 빌드와 비교하고 어떤 부분이 새롭게 빌드되어야 하는지 파악하고 변경된 부분의 작업만을 수행하는 것입니다.</p>
+
+<h3 id="where-do-dependencies-come-from">Where Do Dependencies Come From?</h3>
+
+<p>build process는 결국 여러 작업들을 특정 순서태로 수행하는 일련의 과정입니다. 하지만 이 순서들은 build system이 build graph를 이용해 맞춰주기 때문에  개발자는 이에 대해 신경쓸 필요가 없습니다. 우리가 신경써야 할 것은 의존성입니다. build sytem이 작업을 올바른 순서를 따라 병렬적으로 수행 하도록 해서 멀티코어를 최대한 활용하는 것이지요.</p>
+
+<p>그럼 이런 의존성은 어디서 올까요? (build system은 어디로 부터 의존성에 대한 정보를 얻을까요?)</p>
+
+<h5 id="built-in">Built in</h5>
+<p><img src="/blog/assets/images/what_happens_when_xcode_build_start/4.png?raw=true" alt="4" /></p>
+
+<p>특정 작업의 경우 build system에 내장된 정보에서 종속성 정보를 가져옵니다.</p>
+
+<h5 id="target-dependencies">Target Dependencies</h5>
+<p>타겟 의존성은 말그대로 특정 타겟을 의존하여 내가 빌드하려는 타겟이 빌드되기 전에 먼저 빌드되어야 하는 의존성을 이야기 합니다. 의존성이 있어 먼저 빌드되어야 하지만 Xcode 10 이후 부터는 적용된 build system에서는 의존성 없이 빌드할 수 있는 일부분에 대해서 병렬적인 빌드가 가능합니다.
+이런 타겟 의존성은 명시적 의존성과, 암시적 의존성으로 나뉩니다.</p>
+
+<h5 id="explicit-dependencies">Explicit Dependencies</h5>
+<p><img src="/blog/assets/images/what_happens_when_xcode_build_start/5.png?raw=true" alt="5" /></p>
+
+<p>타겟 의존성을 명시적으로 나타낸 것입니다.</p>
+
+<h5 id="implicit-dependencies">Implicit Dependencies</h5>
+<p><img src="/blog/assets/images/what_happens_when_xcode_build_start/6.png?raw=true" alt="6" /></p>
+
+<p>동일한 프로젝트 혹은 workspace에 있는 타겟의 경우 의존성이 명시되어 있지 않더라도  Xcode가 스스로 필요한 타겟 의존성을 감지할 수 있는데 이것을 암시적 의존성이라 합니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/videos/play/wwdc2018/415">Behind the Scenes of the Xcode Build Process</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#build" class="page__taxonomy-item p-category" rel="tag">build</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#xcode" class="page__taxonomy-item p-category" rel="tag">xcode</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/#build-structure" class="page__taxonomy-item p-category" rel="tag">Build structure</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-06-01T00:00:00+09:00">June 1, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BWWDC%5D+Xcode+build%EB%A5%BC+%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B4+%EC%96%B4%EB%96%A4%EC%9D%BC%EC%9D%B4+%EB%B2%8C%EC%96%B4%EC%A7%88%EA%B9%8C%3F+-+%281%29%20https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Fwhat_happens_when_xcode_build_start-1%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Fwhat_happens_when_xcode_build_start-1%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Fwhat_happens_when_xcode_build_start-1%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/build%20structure/reducing-your-apps-launch-time/" class="pagination--pager" title="[doc] iOS App Launch Time 줄이기 대작전
+">이전</a>
+    
+    
+      <a href="/blog/build%20structure/about-Mach-O-1/" class="pagination--pager" title="[doc] Mach-O에 대해 알아보자 -1
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/tuist-what-i-learned/" rel="permalink">Tuist를 적용하며 배운것들
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/swift-concurrency-1/" rel="permalink">Swift 동시성 프로그래밍 tutorial - (1)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.
+Async/await, Async/Await: Sequences, ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/object-oriented-programming-1/" rel="permalink">객체지향적인 코드란 무엇인가?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" rel="permalink">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Contact:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 pete. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

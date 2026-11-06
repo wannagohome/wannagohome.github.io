@@ -1,0 +1,705 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Swift Package Manager에 대해 알아보자 - 집에 빨리 가기위한 몸부림의 기록</title>
+<meta name="description" content="swift는 많은 플랫폼을 지원하는 언어입니다. 따라서 애플은 다양한 플랫폼에서 동일하게 동작하는 패키지의 필요성을 느끼게 되었고 Swift Package Manager(SPM)을 만들게 되었다고 합니다. 그래서 인지 spm은 자신만의 독자적인 빌드 시스템을 가지고 있습니다. 즉, swift로 개발하고 있다면 spm을 통해 환경에 상관없이 swift 라이브러리를 사용할 수 있습니다.">
+
+
+  <meta name="author" content="pete">
+  
+  <meta property="article:author" content="pete">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="집에 빨리 가기위한 몸부림의 기록">
+<meta property="og:title" content="Swift Package Manager에 대해 알아보자">
+<meta property="og:url" content="https://wannagohome.github.io//blog/build%20structure/swift-package/">
+
+
+  <meta property="og:description" content="swift는 많은 플랫폼을 지원하는 언어입니다. 따라서 애플은 다양한 플랫폼에서 동일하게 동작하는 패키지의 필요성을 느끼게 되었고 Swift Package Manager(SPM)을 만들게 되었다고 합니다. 그래서 인지 spm은 자신만의 독자적인 빌드 시스템을 가지고 있습니다. 즉, swift로 개발하고 있다면 spm을 통해 환경에 상관없이 swift 라이브러리를 사용할 수 있습니다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-06-21T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://wannagohome.github.io//blog/build%20structure/swift-package/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "pete",
+      "url": "https://wannagohome.github.io//blog/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<meta name="robots" content="noindex, nofollow">
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          집에 빨리 가기위한 몸부림의 기록
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://wannagohome.github.io//blog/">
+        <img src="/blog/assets/images/profile.jpg" alt="pete" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://wannagohome.github.io//blog/" itemprop="url">pete</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>work hard to work less</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Contact</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Swift Package Manager에 대해 알아보자">
+    <meta itemprop="description" content="swift는 많은 플랫폼을 지원하는 언어입니다. 따라서 애플은 다양한 플랫폼에서 동일하게 동작하는 패키지의 필요성을 느끼게 되었고 Swift Package Manager(SPM)을 만들게 되었다고 합니다. 그래서 인지 spm은 자신만의 독자적인 빌드 시스템을 가지고 있습니다. 즉, swift로 개발하고 있다면 spm을 통해 환경에 상관없이 swift 라이브러리를 사용할 수 있습니다.">
+    <meta itemprop="datePublished" content="2022-06-21T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://wannagohome.github.io//blog/build%20structure/swift-package/" class="u-url" itemprop="url">Swift Package Manager에 대해 알아보자
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>swift는 많은 플랫폼을 지원하는 언어입니다. 따라서 애플은 다양한 플랫폼에서 동일하게 동작하는 패키지의 필요성을 느끼게 되었고 Swift Package Manager(SPM)을 만들게 되었다고 합니다. 그래서 인지 spm은 자신만의 독자적인 빌드 시스템을 가지고 있습니다. 즉, swift로 개발하고 있다면 spm을 통해 환경에 상관없이 swift 라이브러리를 사용할 수 있습니다.</p>
+
+<p><!-- spm은 swift로 만들어졌으며, spm또한 하나의 swift 패키지 입니다. --></p>
+
+<p>이제 swift 패키지를 직접 만들어 보면서 자세한 내용들을 살펴보겠습니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">mkdir </span>SamplePackage <span class="o">&amp;&amp;</span> <span class="nb">cd </span>SamplePackage
+ <span class="nv">$ </span>swift package init
+ <span class="nv">$ </span>tree <span class="nb">.</span>
+<span class="nb">.</span>
+├── Package.swift
+├── README.md
+├── Sources
+│   └── SamplePackage
+│       └── SamplePackage.swift
+└── Tests
+    └── SamplePackageTests
+        └── SamplePackageTests.swift
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">swift package init</code> 으로 패키지를 만들수 있습니다. 디렉토리 이름을 딴 패키지가 만들어 졌네요. <code class="language-plaintext highlighter-rouge">Package.swift</code> 파일은 manifest 파일로 패키지의 전체 구조를 나타냅니다. 아래와 같은 파일이 만들어 졌네요. (Xcode 13.4.1)</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// swift-tools-version: 5.6</span>
+<span class="c1">// The swift-tools-version declares the minimum version of Swift required to build this package.</span>
+
+<span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackage"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, and make them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackage"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"SamplePackage"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Dependencies declare other packages that this package depends on.</span>
+        <span class="c1">// .package(url: /* package url */, from: "1.0.0"),</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package. A target can define a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package, and on products in packages this package depends on.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackage"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackageTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"SamplePackage"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>swift 패키지의 manifest는 언제나 <code class="language-plaintext highlighter-rouge">// swift-tools-version: *</code> 라는 커멘트 주석으로 시작해야 합니다. 패키지를 빌드하기위한 swift의 최소 버전을 나타냅니다.</p>
+
+<p>swift 패키지는 <strong>Products, Dependencies, Targets</strong> 이렇게 크게 세 부분을 나뉩니다. <strong>Dependencies</strong>에는 패키지에 필요한 또 다른 패키지가 의존성으로 들어갑니다. 각 의존성에는 우리가 만드려는 패키지 처럼 결과물은 product를 제공하고 패키지에서 사용할 수 있습니다.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+         <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/Alamofire/Alamofire.git"</span><span class="p">,</span> <span class="o">.</span><span class="nf">upToNextMajor</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="s">"5.6.1"</span><span class="p">)),</span>
+         <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/Alamofire/Alamofire.git"</span><span class="p">,</span> <span class="nv">branch</span><span class="p">:</span> <span class="s">"master"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>Alamofire 패키지를 의존성을 추가한 모습입니다. remote 패키지에는 url과 버전정보가, local 패키지에는 이름과 경로가 필요합니다. 버전은 repository의 tag를 기준으로 나뉘어지며 버전 정보 대신에 branch를 지정할 수도 있습니다.</p>
+
+<p><strong>Targets</strong>는 패키지의 빌딩 블록으로 우리가 개발하는 Xcode 프로젝트의 타겟과 유사합니다. 기본적으로 만들고자 하는 target의 이름이 필요하고, target에 포함시키길 소스코드의 경로, 의존성 등을 지정할 수 있습니다. 같은 패키지의 다른 타겟을 의존하는 것 또한 가능합니다.</p>
+
+<p><strong>Products</strong>에는 패키지가 만들어낼 output을 정의합니다. (library or executable) 외부의 패키지는 이 product에 정의된 결과물을 의존하게 되는 것입니다. 여기에선 executable의 타입을 static이나 dynamic으로 지정할 수 있는데 지정하지 않을 경우 swift 패키지가 스스로 알맞는 타입을 지정합니다. 대부분의 경우 static타입으로 의존성이 걸리던데, 프로젝트에 동일한 패키지가 있을 경우 dynamic으로 바뀌는 것이 아닐까 추측합니다.</p>
+
+<p>swift 5.3(Xcode12)이상을 사용한다면 다음과 같은 기능을 추가로 사용할 수도 있습니다.</p>
+
+<ol>
+  <li>패키지에 리소스를 추가할 수 있었습니다. static library에는 리소스를 넣을 수 없어서 별도의 번들을 만들거나 dynamic library로 만들어야 했지만, spm을 사용할 경우 굳이 dynamic type의 의존성을 만들 필요가 없어졌습니다.</li>
+  <li>2019년 애플에서 소개한 새로운 바이너리 프레임워크인 XCFramework를 타겟의 형태로 추가해 사용할 수 있습니다.</li>
+</ol>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackage"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[]),</span>
+        <span class="o">.</span><span class="nf">binaryTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SampleBinaryPackage"</span><span class="p">,</span>
+            <span class="nv">url</span><span class="p">:</span> <span class="s">"https://url/to/sample/remote/xcframework.zip"</span><span class="p">,</span>
+            <span class="nv">checksum</span><span class="p">:</span> <span class="s">"Samle checksum"</span>
+        <span class="p">),</span>
+        <span class="o">.</span><span class="nf">binaryTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SampleBinaryPackage"</span><span class="p">,</span>
+            <span class="nv">path</span><span class="p">:</span> <span class="s">"/sample/path"</span>
+        <span class="p">),</span>    
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"SamplePackageTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"SamplePackage"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/videos/play/wwdc2018/411">Getting to Know Swift Package Manager</a></p>
+
+<p><a href="https://developer.apple.com/documentation/xcode/bundling-resources-with-a-swift-package">Bundling Resources with a Swift Package</a></p>
+
+<p><a href="https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages">Distributing Binary Frameworks as Swift Packages</a></p>
+
+<p><a href="https://www.swift.org/package-manager/#conceptual-overview">Package Manager</a></p>
+
+<p><a href="https://www.swift.org/getting-started/#using-the-package-manager">Using the Package Manager</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#dependency" class="page__taxonomy-item p-category" rel="tag">dependency</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#swift" class="page__taxonomy-item p-category" rel="tag">swift</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#swift-pacakge-manager" class="page__taxonomy-item p-category" rel="tag">swift pacakge manager</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#swift-package" class="page__taxonomy-item p-category" rel="tag">swift package</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#xcode" class="page__taxonomy-item p-category" rel="tag">xcode</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/#build-structure" class="page__taxonomy-item p-category" rel="tag">Build structure</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-06-21T00:00:00+09:00">June 21, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Swift+Package+Manager%EC%97%90+%EB%8C%80%ED%95%B4+%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90%20https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Fswift-package%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Fswift-package%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Fswift-package%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/build%20structure/link-fast-2/" class="pagination--pager" title="[WWDC] Link 속도를 높여보자 (2) - dynamic link
+">이전</a>
+    
+    
+      <a href="/blog/modulization/should-we-modulize-app/" class="pagination--pager" title="모듈화의 장단점
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/tuist-what-i-learned/" rel="permalink">Tuist를 적용하며 배운것들
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/swift-concurrency-1/" rel="permalink">Swift 동시성 프로그래밍 tutorial - (1)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.
+Async/await, Async/Await: Sequences, ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/object-oriented-programming-1/" rel="permalink">객체지향적인 코드란 무엇인가?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" rel="permalink">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Contact:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 pete. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

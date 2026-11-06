@@ -1,0 +1,642 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기 - 집에 빨리 가기위한 몸부림의 기록</title>
+<meta name="description" content="최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습니다.">
+
+
+  <meta name="author" content="pete">
+  
+  <meta property="article:author" content="pete">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="집에 빨리 가기위한 몸부림의 기록">
+<meta property="og:title" content="arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기">
+<meta property="og:url" content="https://wannagohome.github.io//blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/">
+
+
+  <meta property="og:description" content="최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습니다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-07-13T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://wannagohome.github.io//blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "pete",
+      "url": "https://wannagohome.github.io//blog/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<meta name="robots" content="noindex, nofollow">
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          집에 빨리 가기위한 몸부림의 기록
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://wannagohome.github.io//blog/">
+        <img src="/blog/assets/images/profile.jpg" alt="pete" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://wannagohome.github.io//blog/" itemprop="url">pete</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>work hard to work less</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Contact</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기">
+    <meta itemprop="description" content="최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습니다.">
+    <meta itemprop="datePublished" content="2022-07-13T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://wannagohome.github.io//blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" class="u-url" itemprop="url">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습니다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<p>지금은 맥의 모든 라인업에서 애플 실리콘 제품이 출시되기도 했고, 거의 대부분의 소프트웨어도 arm64 아키텍쳐에 대응하는 제품을 출시하며 호환성 문제가 거의 사라져 가고있는 것 같습니다. 하지만 여전히 업데이트가 이루어 지지 않고 있는 소프트웨어도 조금 남아있는 상황입니다.</p>
+
+<p>개발을 하다보면 여러가지 도구를 사용하게 되는데, 대부분의 경우 공개되어 있는 소스코드를 모듈 형태로 의존하게 됩니다. 하지만 소스코드가 아닌 바이너리를 제공하는 경우도 있는데, 이 바이너리가 앞서 이야기 했던 업데이트가 이루어지지 않았을 경우, 즉, arm64에 대한 대응이 없을 경우 문제가 될 수 있습니다. (arm64-ios-simulator binary가 없는 경우)</p>
+
+<p><br /></p>
+
+<h3 id="문제점">문제점</h3>
+
+<p>이제 많은 개발자들이 애플 실리콘 맥으로 개발을 하지만, iOS 시뮬레이터는 아직 x86_64 아키텍쳐를 지원합니다. 따라서 x86_64 아키텍처를 사용하여 빌드하면 arm64 바이너리가 없는 의존성을 사용하더라도 빌드에 성공할 것입니다. 실제로 build setting에 EXCLUDED_ARCHS로 arm64를 설정하면 아무런 문제없이 빌드 됩니다.</p>
+
+<p>하지만 이 방법은 여전히 몇 가지 문제점을 내포하고 있습니다.</p>
+
+<ul>
+  <li>디버깅 속도 저하
+    <ul>
+      <li>애플 실리콘 맥으로 x86 아키텍처 빌드를 할 경우 다음과 같은 경고를 볼 수 있습니다.
+<code class="language-plaintext highlighter-rouge">Warning: Error creating LLDB target at path using an empty LLDB target which can cause slow memory reads from remote devices.</code> 사실 인텔맥에서 arm64 아키텍처로 빌드할 경우에도 동일하게 표시되는데, cpu의 아키텍쳐와 빌드하는 아키텍쳐가 다를 경우 LLDB 성능이 저하 될 수 있습니다.</li>
+    </ul>
+  </li>
+  <li>SPM 사용의 어려움
+    <ul>
+      <li>몇가지 패키지의 경우 x86 빌드를 강제하면 다음과 같은 에러가 발생합니다.
+<img src="/blog/assets/images/build_app_with_arm64_simulator_without_arm64_simulator_binary/1.png" alt="1" width="80%" class="center" />
+swiftmodule안에 x86 타겟이 포함되지 않아 모듈을 찾지 못한것입니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="시도실패">시도(실패)</h3>
+
+<p>문제가된 SDK의 경우 cocoapod으로 제공이 되고 있었고, podspec에서 부터 EXCLUDED_ARCHS로 arm64가 지정되어 있었기 때문에 pod을 사용하는 것이 아닌 framwork를 직접 참조하도록 해보았지만, 역시나 실패하였습니다. xcode는 arm64-ios-simulator binary를 찾아보았지만 발견하지 못했으니 당연하겠죠.</p>
+
+<p><br /></p>
+
+<h3 id="해결">해결</h3>
+
+<p>따라서 static linker가 바이너리를 찾지 못해도 넘어가도록 하는 방법이 필요했고, 해결책은 단순했습니다. 제공되는 framwork를 xcframework로 만들고, 해당 의존성을 사용하는 코드를 전처리기로 제외시키는 것입니다. 아직 정확한 이유를 파악하진 못했지만, fat framework를 xcframework로 만들어 사용하니, static linker가 warning을 내뱉긴 하지만 binary가 없다고 fail 시키진 않았습니다.</p>
+
+<p>fat framework를 xcframework로 만드는 방법은 간단합니다. xcframwork는 아이폰용, simulator용 바이너리가 각각 필요하기 때문에 하나의 fat framework로 두 바이너리를 추출해 만들고 합치는 것입니다.</p>
+
+<p>fat framework를 복사하여 두 개로 만든 뒤, 아이폰용으로 사용할 framwork의 info.plist의 CFBundleSupportedPlatforms를 iPhoneOS로 설정하고 이 바이너리를 <code class="language-plaintext highlighter-rouge">lipo -extract</code>로 arm64 바이너리만 추출합니다.</p>
+
+<p>simulator용으로 사용할 frmawork의 info.plist의 CFBundleSupportedPlatforms은 iPhoneSimulator로 설정하고 <code class="language-plaintext highlighter-rouge">lipo -extract</code> x86_64 바이너리만 추출 합니다.</p>
+
+<p>이 두 바이너리를 <code class="language-plaintext highlighter-rouge">xcodebuild -create-xcframework</code>로 xcframework를 만들면 끝입니다.</p>
+
+<p>물론 xcframework로 만들었다고 해서 바로 빌드가 되진 않고 해당 의존성에서 제공하는 코드들은 제외시켜야 symbol을 못찾았다고 fail이 나지 않습니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPFrameworks/Concepts/WeakLinking.html">Weak Linking</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#binary" class="page__taxonomy-item p-category" rel="tag">binary</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#build-setting" class="page__taxonomy-item p-category" rel="tag">build setting</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/#xcode" class="page__taxonomy-item p-category" rel="tag">Xcode</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-07-13T00:00:00+09:00">July 13, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=arm64-simulator+binary%EA%B0%80+sdk%EB%A5%BC+%EC%9D%98%EC%A1%B4%ED%95%A0+%EB%95%8C+m1+simulator+%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C+%EB%B9%8C%EB%93%9C%ED%95%98%EA%B8%B0%20https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fxcode%2Fbuild_app_with_arm64_simulator_without_arm64_simulator_binary%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fxcode%2Fbuild_app_with_arm64_simulator_without_arm64_simulator_binary%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fxcode%2Fbuild_app_with_arm64_simulator_without_arm64_simulator_binary%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/modulization/should-we-modulize-app/" class="pagination--pager" title="모듈화의 장단점
+">이전</a>
+    
+    
+      <a href="/blog/programming/object-oriented-programming-1/" class="pagination--pager" title="객체지향적인 코드란 무엇인가?
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/tuist-what-i-learned/" rel="permalink">Tuist를 적용하며 배운것들
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/swift-concurrency-1/" rel="permalink">Swift 동시성 프로그래밍 tutorial - (1)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.
+Async/await, Async/Await: Sequences, ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/object-oriented-programming-1/" rel="permalink">객체지향적인 코드란 무엇인가?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/modulization/should-we-modulize-app/" rel="permalink">모듈화의 장단점
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">앱을 모듈화 하는 과정은 정말 어렵습니다. 처음부터 멀티 모듈로 설계된 앱이라면 모를까 이미 만들어져 있는 프로그램 그것도 어느정도 규모가 있는 프로그램이라면 프로젝트 구조의 근간을 바꾸는 모듈화가 결코 쉽게 느껴질 수 없을 것입니다. 그렇다면 이미 잘 돌아가고 있는 서비스를 여러...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Contact:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 pete. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

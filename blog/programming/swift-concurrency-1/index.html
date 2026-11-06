@@ -1,0 +1,668 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Swift 동시성 프로그래밍 tutorial - (1) - 집에 빨리 가기위한 몸부림의 기록</title>
+<meta name="description" content="매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요. Async/await, Async/Await: Sequences, Continuations for interfacing async tasks with synchronous code, Structured concurrency, Actors, async let bindings 등등.. 많은 언어들이 이미 지원하는 기능으로 전혀 새로운 것은 아니지만, 수 많은 개발자들의 생산성을 높여줄 수 있을 것이라는 기대에 많은 분들이 기다려 왔던 것으로 압니다. 오늘은 이들을 어떻게 사용하는지에 대해 알아보고자 합니다.">
+
+
+  <meta name="author" content="pete">
+  
+  <meta property="article:author" content="pete">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="집에 빨리 가기위한 몸부림의 기록">
+<meta property="og:title" content="Swift 동시성 프로그래밍 tutorial - (1)">
+<meta property="og:url" content="https://wannagohome.github.io//blog/programming/swift-concurrency-1/">
+
+
+  <meta property="og:description" content="매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요. Async/await, Async/Await: Sequences, Continuations for interfacing async tasks with synchronous code, Structured concurrency, Actors, async let bindings 등등.. 많은 언어들이 이미 지원하는 기능으로 전혀 새로운 것은 아니지만, 수 많은 개발자들의 생산성을 높여줄 수 있을 것이라는 기대에 많은 분들이 기다려 왔던 것으로 압니다. 오늘은 이들을 어떻게 사용하는지에 대해 알아보고자 합니다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-12T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://wannagohome.github.io//blog/programming/swift-concurrency-1/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "pete",
+      "url": "https://wannagohome.github.io//blog/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<meta name="robots" content="noindex, nofollow">
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          집에 빨리 가기위한 몸부림의 기록
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://wannagohome.github.io//blog/">
+        <img src="/blog/assets/images/profile.jpg" alt="pete" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://wannagohome.github.io//blog/" itemprop="url">pete</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>work hard to work less</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Contact</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Swift 동시성 프로그래밍 tutorial - (1)">
+    <meta itemprop="description" content="매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.Async/await, Async/Await: Sequences, Continuations for interfacing async tasks with synchronous code, Structured concurrency, Actors, async let bindings 등등..많은 언어들이 이미 지원하는 기능으로 전혀 새로운 것은 아니지만, 수 많은 개발자들의 생산성을 높여줄 수 있을 것이라는 기대에 많은 분들이 기다려 왔던 것으로 압니다. 오늘은 이들을 어떻게 사용하는지에 대해 알아보고자 합니다.">
+    <meta itemprop="datePublished" content="2022-09-12T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://wannagohome.github.io//blog/programming/swift-concurrency-1/" class="u-url" itemprop="url">Swift 동시성 프로그래밍 tutorial - (1)
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.<br />
+<a href="https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md">Async/await</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md">Async/Await: Sequences</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0300-continuation.md">Continuations for interfacing async tasks with synchronous code</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md">Structured concurrency</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0306-actors.md">Actors</a>, <a href="https://github.com/apple/swift-evolution/blob/main/proposals/0317-async-let.md">async let bindings</a> 등등..<br />
+많은 언어들이 이미 지원하는 기능으로 전혀 새로운 것은 아니지만, 수 많은 개발자들의 생산성을 높여줄 수 있을 것이라는 기대에 많은 분들이 기다려 왔던 것으로 압니다. 오늘은 이들을 어떻게 사용하는지에 대해 알아보고자 합니다.</p>
+
+<p><br /></p>
+
+<h1 id="배경">배경</h1>
+<p>동시성은 아주 오래전 부터 제시되어 온 개념입니다. 여러가지 연산을 독집적인 단위로 나누고 이를 서로 다른 실행 흐름에서 실행할 수 있는 능력을 의미하며, 컴퓨터 프로세서가 multi threading 성능을 높이는 쪽으로 발전하기 시작하면서 동시성 프로그래밍 또한 함께 발전하게 되었습니다.</p>
+
+<p>동시성 프로그래밍이라는 개념이 오래된 만큼, swift는 이미 동시성 프로그래밍을 지원하고 있었습니다. 바로 GCD와 Operation Queue를 통해서 말이지요. GCD는 아주 강력한 프레임워크로서 동시성 프로그래밍을 아주 편하게 만들어 줍니다. (thread를 직접 만들과 관리할 필요가 없다니 세상에 마상에….) 하지만 인간의 욕심은 끝이 없어 GCD의 closure 까지 없애고자 하니, 이를 돕는 것이 이번 글에서 알아볼 async, await, actor 입니다.</p>
+
+<p>특히 iOS 앱을 개발하다 보면 수 많은 비동기 작업들을 수행하게 됩니다. 기존에는 이 비동기 작업이 만들어 내는 callback 지옥을 벗어나고자 반응형 프로그래밍을 많이들 사용해 왔었는데, 언어의 차원에서 이를 개선할 수 있는 방안이 새롭게 추가된 것입니다.</p>
+
+<p><em><font color="gray">(GCD의 작동 방식이나 Dispatch Queue등에 대한 내용을 생략하겠습니다)</font></em></p>
+
+<p><br /></p>
+
+<h1 id="비동기-함수를-만들어보자">비동기 함수를 만들어보자</h1>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">sum</span><span class="p">(</span><span class="n">_</span> <span class="nv">a</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">_</span> <span class="nv">b</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">async</span> <span class="o">-&gt;</span> <span class="kt">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="p">}</span>
+
+<span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nf">sum</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="c1">// 5</span>
+</code></pre></div></div>
+
+<p>비동기 함수를 만드는 방법은 아주 간단합니다. return type을 쓰기전에 <strong><font color="#ED6E57">async</font></strong> 키워드를 붙이고, 이를 사용하는 쪽에서는 <strong><font color="#ED6E57">await</font></strong> 키워드를 붙여 호출하는 것 입니다. 하지만 조금 이상한 부분이 있습니다. 단순히 + 연산을 하는 것에 비동기 작업이 필요한가요? 여기에서 <strong><font color="#ED6E57">async</font></strong> 는 비동기 작업이 <u>있을 수 있다</u>는 것을 나타냅니다. 따라서 sum(_:_:)과 같은 함수를 만들어도 아무런 문제없이 컴파일이 가능합니다.</p>
+
+<p>명심하시기 바랍니다. suspension point는 async가 함수가 아닌 await로 함수가 호출되는 부분에서 만들어집니다.</p>
+
+<p>이와 함께 몇 가지 더 짚고 넘어가야할 내용이 있습니다.</p>
+<ol>
+  <li>async 함수가 호출되어 suspend 상태에 들어갔을 때 이 함수를 호출한 다른 async 함수들도 모두 suspend 됩니다.</li>
+  <li>동기함수는 async 함수를 직접 호출하지 못합니다. 동기함수는 자기자신을 suspend 시키는 방법을 알지 못합니다.</li>
+  <li>suspend는 blocking이 아닙니다. suspend가 일어났어도 thread는 계속 동작합니다. 만약 비동기 함수 Foo를 호출한뒤 다른 비동기 함수 Bar를 호출한다고 했을 때, Bar가 먼저 실행 될 수 있습니다.</li>
+</ol>
+
+<p><br /></p>
+
+<p>비동기 함수가 Error를 내뱉는 경우가 있을 수 있습니다. 네트워크 호출이 가장 대표적인 예시가 될 것 같네요.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">fetch</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Data</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">try</span> <span class="k">await</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">someURL</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="k">try</span><span class="p">?</span> <span class="k">await</span> <span class="nf">fetch</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"Data fetched"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>이렇게 async await에 thorws와 try가 함께 사용될 수 있습니다. throws는 async뒤에 써야하지만 try는 awiat앞으로 와야 합니다.</p>
+
+<p><br /></p>
+
+<h1 id="비동기-함수를-호출해-보자">비동기 함수를 호출해 보자</h1>
+
+<p>사실 위의 소스코드와 설명들을 자세히 들어다 보면 이상한 점을 발견할 수 있습니다. await로 async 함수를 호출하는 부분은 suspension point가 될 수 있습니다. 그리고 동기 함수는 이 suspension을 어떻게 다뤄야 할지 알지 못하니 직접 호출이 불가능합니다. 그런데 우리가 만드는 함수들은 모두 기본적으로 동기 함수입니다. 이는 top level도 마찬가지 입니다. 따라서 위의 코드를 그대로 따라하면 컴파일 오류로 실행조차 되지 않는것을 확인 할 수 있습니다. async 함수는 또다른 async 함수에서만 호출이 가능한데, 어떻게 호출할 수 있을까요?</p>
+
+<p>크게 세 가지를 최초의 async 함수로 사용할 수 있습니다.</p>
+<ol>
+  <li>@main attribute가 붙어있는 곳의 main 함수. 즉, 프로그램의 entry point.</li>
+  <li>SwiftUI framework 내에 async 함수를 trigger 할 수 있는 곳들 ex_ refreshable(), task()</li>
+  <li><a href="https://developer.apple.com/documentation/swift/task">Task</a></li>
+</ol>
+
+<p><strong><font color="#ED6E57">Task</font></strong> 는 동기함수 에서 async 함수를 호출 할 수 있도록 해줍니다.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">fetch</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Data</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">try</span> <span class="k">await</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">someURL</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">fetchAsynchronously</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">Task</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nf">fetch</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<p>물론 fetchAsynchronously()는 여전히 suspend를 하지 못하므로 Task의 결과를 기다리지 않고 return 됩니다.</p>
+
+<p><br /></p>
+
+<p>async와 await의 사용법을 간단하게 짚어보았습니다. 다음에는 비동기 프로퍼티에 대해 알아보겠습니다.</p>
+
+<p><br /><br /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#concurrency" class="page__taxonomy-item p-category" rel="tag">Concurrency</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#swift" class="page__taxonomy-item p-category" rel="tag">Swift</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/#programming" class="page__taxonomy-item p-category" rel="tag">Programming</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-09-12T00:00:00+09:00">September 12, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Swift+%EB%8F%99%EC%8B%9C%EC%84%B1+%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D+tutorial+-+%281%29%20https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fprogramming%2Fswift-concurrency-1%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fprogramming%2Fswift-concurrency-1%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fprogramming%2Fswift-concurrency-1%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/programming/object-oriented-programming-1/" class="pagination--pager" title="객체지향적인 코드란 무엇인가?
+">이전</a>
+    
+    
+      <a href="/blog/programming/tuist-what-i-learned/" class="pagination--pager" title="Tuist를 적용하며 배운것들
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/tuist-what-i-learned/" rel="permalink">Tuist를 적용하며 배운것들
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/object-oriented-programming-1/" rel="permalink">객체지향적인 코드란 무엇인가?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" rel="permalink">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/modulization/should-we-modulize-app/" rel="permalink">모듈화의 장단점
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">앱을 모듈화 하는 과정은 정말 어렵습니다. 처음부터 멀티 모듈로 설계된 앱이라면 모를까 이미 만들어져 있는 프로그램 그것도 어느정도 규모가 있는 프로그램이라면 프로젝트 구조의 근간을 바꾸는 모듈화가 결코 쉽게 느껴질 수 없을 것입니다. 그렇다면 이미 잘 돌아가고 있는 서비스를 여러...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Contact:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 pete. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,622 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>모듈화의 장단점 - 집에 빨리 가기위한 몸부림의 기록</title>
+<meta name="description" content="앱을 모듈화 하는 과정은 정말 어렵습니다. 처음부터 멀티 모듈로 설계된 앱이라면 모를까 이미 만들어져 있는 프로그램 그것도 어느정도 규모가 있는 프로그램이라면 프로젝트 구조의 근간을 바꾸는 모듈화가 결코 쉽게 느껴질 수 없을 것입니다. 그렇다면 이미 잘 돌아가고 있는 서비스를 여러개의 모듈로 쪼개야만 할까요? 정확한 판단을 위해 모듈화를 결정하면 어떤일이 벌어질지 짚어보겠습니다.">
+
+
+  <meta name="author" content="pete">
+  
+  <meta property="article:author" content="pete">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="집에 빨리 가기위한 몸부림의 기록">
+<meta property="og:title" content="모듈화의 장단점">
+<meta property="og:url" content="https://wannagohome.github.io//blog/modulization/should-we-modulize-app/">
+
+
+  <meta property="og:description" content="앱을 모듈화 하는 과정은 정말 어렵습니다. 처음부터 멀티 모듈로 설계된 앱이라면 모를까 이미 만들어져 있는 프로그램 그것도 어느정도 규모가 있는 프로그램이라면 프로젝트 구조의 근간을 바꾸는 모듈화가 결코 쉽게 느껴질 수 없을 것입니다. 그렇다면 이미 잘 돌아가고 있는 서비스를 여러개의 모듈로 쪼개야만 할까요? 정확한 판단을 위해 모듈화를 결정하면 어떤일이 벌어질지 짚어보겠습니다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-06-22T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://wannagohome.github.io//blog/modulization/should-we-modulize-app/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "pete",
+      "url": "https://wannagohome.github.io//blog/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<meta name="robots" content="noindex, nofollow">
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          집에 빨리 가기위한 몸부림의 기록
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://wannagohome.github.io//blog/">
+        <img src="/blog/assets/images/profile.jpg" alt="pete" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://wannagohome.github.io//blog/" itemprop="url">pete</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>work hard to work less</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Contact</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="모듈화의 장단점">
+    <meta itemprop="description" content="앱을 모듈화 하는 과정은 정말 어렵습니다. 처음부터 멀티 모듈로 설계된 앱이라면 모를까 이미 만들어져 있는 프로그램 그것도 어느정도 규모가 있는 프로그램이라면 프로젝트 구조의 근간을 바꾸는 모듈화가 결코 쉽게 느껴질 수 없을 것입니다. 그렇다면 이미 잘 돌아가고 있는 서비스를 여러개의 모듈로 쪼개야만 할까요? 정확한 판단을 위해 모듈화를 결정하면 어떤일이 벌어질지 짚어보겠습니다.">
+    <meta itemprop="datePublished" content="2022-06-22T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://wannagohome.github.io//blog/modulization/should-we-modulize-app/" class="u-url" itemprop="url">모듈화의 장단점
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>앱을 모듈화 하는 과정은 정말 어렵습니다. 처음부터 멀티 모듈로 설계된 앱이라면 모를까 이미 만들어져 있는 프로그램 그것도 어느정도 규모가 있는 프로그램이라면 프로젝트 구조의 근간을 바꾸는 모듈화가 결코 쉽게 느껴질 수 없을 것입니다. 그렇다면 이미 잘 돌아가고 있는 서비스를 여러개의 모듈로 쪼개야만 할까요? 정확한 판단을 위해 모듈화를 결정하면 어떤일이 벌어질지 짚어보겠습니다.</p>
+
+<h2 id="장점">장점</h2>
+
+<h5 id="생산성-증가">생산성 증가</h5>
+<p>모듈들의 책임과 경계가 명확하게 나뉘어져 있을 수록 생산성이 커지는 효과를 기대할 수 있습니다. 어플리케이션의 사이즈가 커질 수록 여러사람이 협력하여 하나의 앱을 만들어 가게 되는데, monolithic한 구조에서는 동료들의 작업 결과물이 충돌을 일으킬 수 있고, 선행되어야 하는 작업으로 인해 병목이 발생할 수도 있습니다. 하지만 멀티 모듈의 구조가 잘 잡혀있다면 정해진 인터페이스안에서 개발함으로써 충돌과 병목을 방지할 수 있습니다.</p>
+
+<h5 id="확장엔-열려있고-수정엔-닫혀있다">확장엔 열려있고, 수정엔 닫혀있다</h5>
+<p>사실 모듈화의 많은 장점들은 OOP적인 관점에서 봤을 때 좋은 코드 구조가 가져다 주는 장점과 겹쳐있습니다. 프로그램을 논리적으로 분리시키는 것이 객체의 책임을 분리시키는 것과 크게 다르지 않기 때문이죠. 따라서 SRP, OCP등을 모듈화에도 동일하게 적용시킬 수 있다고 생각합니다.</p>
+
+<p>모듈의 책임과 경계가 명확하고 모듈간의 의존성이 느슨하다면, 수정사항이 생겼을 때 필요한 모듈만을 수정하도록 관리포인트를 최소화 할 수 있고, 모듈끼리는 추상화된 형태로만 의존하기 때문에 해당 인터페이스를 구현하는 다른 구현체로 모듈을 교체하기도 쉬워집니다.</p>
+
+<h5 id="구조를-파악하기-쉽다">구조를 파악하기 쉽다</h5>
+<p>모듈과 의존관계만으로 프로젝트의 전체적인 구조를 파악하기가 쉬워집니다. 게다가 구조 파악이 쉬워지니 디버깅 포인트를 찾기도 쉽습니다.</p>
+
+<h5 id="테스트가-용이하다">테스트가 용이하다</h5>
+<p>우리가 클래스의 책임을 최소화 하고 coupling을 제거하는 이유중 하나는 testability를 높이기 위함입니다. 이는 모듈에도 동일하게 적용되어 각 모듈의 테스트를 용이하게 만들어 줍니다.</p>
+
+<h5 id="재사용성-증가">재사용성 증가</h5>
+<p>모듈화가 잘되어 있다면 프로그램 전체의 코드 재사용성이 크게 증가합니다. 단순히 OOP에서 클래스를 재사용하는 수준이 아닌, 필요한 모듈들을 조합하여 데모앱을 만들어 볼 수 도 있습니다.</p>
+
+<h5 id="빌드타임-감소">빌드타임 감소</h5>
+<p>incremental build 와 clean build 시간 모두를 감소시킬 수 있습니다. 모듈을 잘게 쪼개어 놓는 다면 incremental build과정에서 수정한 모듈만 빌드하게 되기 때문에 incremental build 시간을 획기적으로 줄일 수 있습니다.</p>
+
+<p>clean build 시간을 줄이는 방법에는 크게 세 가지가 있다고 생각하는데, 먼저는 병렬빌드를 최대한 활용하는 것입니다. 앱이 여려개의 모듈로 쪼개지면 모듈 각각을 병렬적으로 빌드할 수 있게 되고, 이들의 의존관계를 잘 설정한다면 병렬빌드를 효율적으로 활용 할 수 있게 됩니다. 모듈의 빌드를 바이너리 형태로 캐싱함으로써 빌드를 건너뛸수도 있고, 개발하고 있는 기능의 피쳐앱 타겟을 만들어 빌드의 양 자체를 대폭 줄일 수도 있습니다.</p>
+
+<p><br /><br /></p>
+
+<h2 id="단점">단점</h2>
+
+<h5 id="모듈화를-위한-리소스">모듈화를 위한 리소스</h5>
+<p>앞서 이야기 했듯이 이미 만들어져 있는 프로그램은 여러개의 모듈로 쪼개는 일은 정말 많은 고민과 노력을 필요로 합니다. 지금까지 살펴본 모듈화의 장점을 얻기 위해선 모듈의 경계에 대한 많은 고민을 필요로 하고, 프로젝트의 구조 자체를 바꾸는 것이기에 모든 구성원들의 동의와 노력이 필요로 합니다.</p>
+
+<h5 id="관리포인트-증가">관리포인트 증가</h5>
+<p>모듈화를 했을 때 향상되는 유지보수성에 대해 이야기 했지만 반면에 관리포인트가 증가하는 면도 있습니다. 프로젝트 유지보수를 위해 모듈 레벨의 관리가 추가로 필요해 지는 것입니다. 특정 모듈에 대한 의존성이 많아지면 이를 어떻게 분산시킬지, 모듈이 커지게되면 이를 또 어떻게 나눌지 등등에 대한 고민이 추가로 필요하게 됩니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://www.youtube.com/watch?v=DngAZyWMGR0">Making Architecture Matter - Martin Fowler Keynote</a></p>
+
+<p><a href="https://soojin.ro/blog/loose-coupling">모바일 앱의 느슨한 결합</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#modulization" class="page__taxonomy-item p-category" rel="tag">modulization</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/#modulization" class="page__taxonomy-item p-category" rel="tag">Modulization</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-06-22T00:00:00+09:00">June 22, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%EB%AA%A8%EB%93%88%ED%99%94%EC%9D%98+%EC%9E%A5%EB%8B%A8%EC%A0%90%20https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fmodulization%2Fshould-we-modulize-app%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fmodulization%2Fshould-we-modulize-app%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fmodulization%2Fshould-we-modulize-app%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/build%20structure/swift-package/" class="pagination--pager" title="Swift Package Manager에 대해 알아보자
+">이전</a>
+    
+    
+      <a href="/blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" class="pagination--pager" title="arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/tuist-what-i-learned/" rel="permalink">Tuist를 적용하며 배운것들
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/swift-concurrency-1/" rel="permalink">Swift 동시성 프로그래밍 tutorial - (1)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.
+Async/await, Async/Await: Sequences, ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/object-oriented-programming-1/" rel="permalink">객체지향적인 코드란 무엇인가?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" rel="permalink">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Contact:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 pete. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

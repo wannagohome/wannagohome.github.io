@@ -1,0 +1,722 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[WWDC] Link 속도를 높여보자 (1) - static link - 집에 빨리 가기위한 몸부림의 기록</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="pete">
+  
+  <meta property="article:author" content="pete">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="집에 빨리 가기위한 몸부림의 기록">
+<meta property="og:title" content="[WWDC] Link 속도를 높여보자 (1) - static link">
+<meta property="og:url" content="https://wannagohome.github.io//blog/build%20structure/link-fast-1/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-06-16T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://wannagohome.github.io//blog/build%20structure/link-fast-1/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "pete",
+      "url": "https://wannagohome.github.io//blog/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<meta name="robots" content="noindex, nofollow">
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          집에 빨리 가기위한 몸부림의 기록
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://wannagohome.github.io//blog/">
+        <img src="/blog/assets/images/profile.jpg" alt="pete" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://wannagohome.github.io//blog/" itemprop="url">pete</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>work hard to work less</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Contact</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[WWDC] Link 속도를 높여보자 (1) - static link">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-06-16T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://wannagohome.github.io//blog/build%20structure/link-fast-1/" class="u-url" itemprop="url">[WWDC] Link 속도를 높여보자 (1) - static link
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          13 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<p>Linking 과정에서 일어나는 일에대해 알아봄으로써 어떻게 Linking 속도를 높일수 있는지 배워봅시다.</p>
+
+<p><br /></p>
+
+<h1 id="linking-이란">Linking 이란?</h1>
+
+<p>우리가 작성한 코드와 library나 framework와 같은 외부 의존성을 함께 사용하기 위해선 linker가 필요합니다. linking은 크게 두 가지 종류로 나뉘는데, 먼저 static linking은 build time에 일어나는데 build time과 app size에 영향을 주게 됩니다. 반면 dynamic linking은 앱이 실행될 때 일어나며, launch time에 영향을 주게 됩니다.</p>
+
+<p><br /></p>
+
+<h1 id="static-linking">Static Linking</h1>
+
+<p>Static linking에 대해 더 자세히 알아보기 전에 과거로 돌아가 history를 살펴보도록 합시다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/1.png" alt="1" width="80%" class="center" /></p>
+
+<p>옛날 옛적 프로그램은 매우 단순했습니다. 하나의 소스파일만이 있었고 그 소스파일을 컴파일해 실행가능한 프로그램을 만들기만 하면 되었죠. 하지만 시간이 지나면서 모든 소스코드를 한 파일에 몰아넣기엔 어렵게 되었고, 여러 파일이 필요하게 됩니다. 여러개의 소스파일은 어떻게 빌드해야 할까요?</p>
+
+<p>소스파일을 나누고자 하는 시도는 단지 파일이 거대해 지는 것 뿐만이 아니라 모든 함수를 다시 컴파일 하는 것을 피하기 위해서 이기도 했습니다. 따라서 컴파일러를 두 부분으로 나누게 됩니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/2.png" alt="2" width="90%" class="center" /></p>
+
+<p>첫 번째 부분은 소스코드를 relocatable 한 object 라는 중간 파일로 컴파일 합니다. 그리고 두 번째 부분에서는 첫 번째의 결과물인 오브젝트 파일을 읽어 executable로 만듭니다. 그리고 여기서 두 번째 부분을 ld 혹은 static linker라고 부릅니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/3.png" alt="3" width="85%" class="center" /></p>
+
+<p>소프트웨어가 발전함에 따라 사람들은 많은 .o(오브젝트) 파일을 만들어 사용했고, 점차 번거로워 지기 시작했습니다. 이 때 누군가가 “이 많은 오브젝트 파일들을 라이브러리로 패키징하는게 낫지 않을까?” 하는 생각을 떠올렸는데, 당시엔 ‘ar’ 이라고 하는 파일들을 bundling 하는 아카이빙 도구가 표준처럼 사용되던 시기였습니다. 그러다 보니 workflow가 다음과 같이 변하게 되는데, 오브제젝트 파일들을 ar로 아카이브 하는 과정이 추가된 것입니다. 그리고 링커는 아카이브 파일에서 오브젝트 파일을 직접 읽어낼 수 있도록 개선되었습니다.</p>
+
+<p><br /></p>
+
+<p>이 방법은 공통의 코드를 공유하는 방법의 놀라운 발전이었습니다. 당시에 단순하게 archive혹은 library라도 불리우던 것이 지금은 static libarary라도 불리게 된것입니다.</p>
+
+<p>하지만 라이브러리에 있는 수천개의 함수들이 그대로 복사되어 들어오면서 프로그램의 크기 또한 비대해졌습니다. 실제로는 그 많은 함수들 중 단 몇개만을 사용하는데 말이지요. 따라서 최적화 과정이 추가되게 됩니다. linker는 static library에 모든 오브젝트 파일을 끌어오지 않고 undefined symbol을 resolve 하는 경우에만 끌어오도록 하는 것입니다. 이는 개발자들이 C의 거대한 표준 라이브러리인 libc.a 를 동일하게 link하면서도 프로그램에 실제 필요한 부분만 사용할 수 있게 해주었습니다. 그리고 이 모델은 지금까지도 사용되고 있습니다.</p>
+
+<p>하지만 앞서 설명한 ‘선택적 로딩’은 개발자들을 햇갈리게 할 때가 있어서, 분명한 이해를 돕기 위해 간단한 예시를 들어보겠습니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/4.png" alt="4" width="85%" class="center" /></p>
+
+<p>main.c 파일에는 foo 함수를 호출하는 main 함수가 있습니다. foo.c 파일에는 bar 함수를 호출하는 foo 함수가 있습니다. bar.c 에는 bar 함수의 구현부가 있으며 사용되지 않는 함수인 unused 함수도 가지고 있습니다. 마지막으로 baz.c 에는 undef 함수를 호출하는 baz 함수가 있습니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/5.png" alt="5" width="85%" class="center" /></p>
+
+<p>이제 이들 각각을 오브젝트 파일로 컴파일 해보겠습니다. foo, bar, undef 에는 회색 표시가 없네요. undefined symbol이기 때문입니다. undefinded symbol은 symbol의 정의 아닌 사용(참조)을 뜻합니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/6.png" alt="6" width="85%" class="center" /></p>
+
+<p>이제 bar.o 와 baz.o 를 static library로 묶고, 나머지 두개의 오브젝트 파일과 static library를 link 해보겠습니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/7.png" alt="7" width="85%" class="center" /></p>
+
+<p>linker는 command line order에 따라 동작합니다. 먼저 main.o 찾아 로드하고 main 함수의 정의를 찾습니다. symbol table에 올라가 있는게 보이시나요? 이때 main 함수만 찾는게 아니라 main 함수가 undefined 상태인 foo를 가지고 있다는 것 또한 찾게됩니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/8.png" alt="8" width="85%" class="center" /></p>
+
+<p>linker는 command line의 다음 파일을 파싱하는데 여기에선 foo.o군요. foo.o는 foo함수의 정의를 가지고 있고 이는 foo가 더이상 undefined 상태가 아니게 된다는 것입니다. 여기서 멈추지 않고 foo.o를 로딩하면서 bar라는 undefined symbol이 추가됩니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/9.png" alt="9" width="85%" class="center" /></p>
+
+<p>이제 command line에 있는 모든 오브젝트 파일들이 로드되었습니다. linker는 아직 남아있는 undefined symbol이 있는지 확인하는데 이 상황에선 bar가 되겠군요. 이제 linker는 남아있는 undefined symbol의 참조를 찾기 위해 command line의 라이브러리 들을 살펴보기 시작합니다. static library에서 bar symbol을 정의하고 있는 bar.o를 찾을 수 있군요. 이제 linker는 archive에서 bar.o를 로드합니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/10.png" alt="10" width="85%" class="center" /></p>
+
+<p>이 시점에서 더이상 남아있는 undefined symbol이 없으니 라이브러리를 읽는 것을 중단하고 다음 단계로 넘어갑니다. 프로그램에 포함될 모든 함수와 데이터에 주소를 할당하는 것입니다. 그리고 나서 모든 함수와 데이터들을 output 파일로 복사합니다.</p>
+
+<p><br /></p>
+
+<p><img src="/blog/assets/images/link_fast/11.png" alt="11" width="85%" class="center" /></p>
+
+<p>드디어 최종 결과물인 프로그램이 나왔습니다. baz.o는 분명 static library에 있지만 프로그램에는 포함되지 않았습니다. linker가 static library를 선택적으로 로드했기 때문입니다.</p>
+
+<p>이제 static linking과 static library에 대해 알았으니 ld64라고 불리우는 애플의 static linker의 개선점에 대해 알아보겠습니다.</p>
+
+<p><br /></p>
+
+<h1 id="ld64-최적화">ld64 최적화</h1>
+
+<p>애플은 많은 요구에 따라 ld64 최적화 작업을 진행했고, linker는 최대 2배의 속도를 내게 될것이라고 합니다. linker의 작업을 병렬적으로 진행할 수 있는 부분들을 찾아내었고 여러개의 코어를 활용하는 것으로 linking속도를 개선한 것입니다. 속도를 높이기 위해 개선된 부분은 다음을 포함합니다.</p>
+
+<ul>
+  <li>input파일의 내용(content)을 output파일로 복사</li>
+  <li>LINKEDIT의 서로 다른 부분을 병렬적으로 빌드</li>
+  <li>UUID 계산과 코드 서명 해싱을 병렬적으로 처리</li>
+  <li>exports-trie builder 알고리즘 개선</li>
+  <li>UUID(SHA256) 계산 가속
+    <ul>
+      <li>crypto 라이브러리의 최신 버전을 채택하여 하드웨어 가속을 향상</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h1 id="linker-속도-끌어올리기">linker 속도 끌어올리기</h1>
+
+<p>linker의 성능을 향상시키는 작업을 하는 과정에서 몇몇 앱들의 configuration이 link time에 영향을 준다는 것을 알게 되었다고 합니다. 어떻게 어플리케이션 개발자인 우리가 link time을 개선시킬 수 있을지 알아봅시다. 총 다섯 가지 입니다. 언제 static library를 사용해야 하는지, link time에 영향을 주는 세가지 옵션(-all_load or force_load, -no_exported_symbols, -no_deduplicate), 몇 가지 static linking 동작에 대해서 입니다.</p>
+
+<p><br /></p>
+
+<h1 id="static-library는-언제-사용해야-할까">static library는 언제 사용해야 할까?</h1>
+
+<p>만약 static library로 빌드된 소스 파일을 사용한다면 빌드 타임이 늦춰지는 것을 경험하게 될 것입니다. 왜냐하면 파일에 변경이 일어난 후(컴파일 되고 난 후) content table을 포함한 모든 static library는 rebuild되어야 하기 때문이죠. 따라서 static library는 변경이 잘 일어나지 않는 안정된 코드에 사용하는 것이 적합하다고 할 수 있습니다. 활발하게 개발중인 코드를 static library로 부터 빼내어 build time을 줄이는 것을 고려해 보시기 바랍니다.</p>
+
+<p>앞서서 우리는 선택적 로딩에 대해 살펴본바 있습니다. 선택적 로딩은 앱의 사이즈를 줄여주지만 linker의 속도를 늦춘다는 단점이 있습니다. 빌드를 반복가능하게 만들고, 전통적인 static library semantic을 따르기 위해 linker는 정해진 순서대로 프로세싱 해야 하기 때문입니다. 이는 ld64의 병렬화를 통한 성능 개선의 일부는 static library에 적용될 수 없다는 것을 의미합니다. 하지만 이런 역사적 동작을 따를 필요가 없다면 linker option을 사용해 빌드 속도를 높일 수 있습니다.</p>
+
+<p><br /></p>
+
+<h1 id="-all_load">-all_load</h1>
+
+<p>그중 하나가 -all_load 입니다. 이 옵션은 linker가 모든 오브젝트 파일을 맹목적으로 로드하게 합니다. 이 옵션은 라이브러리의 대부분을 사용하게 될 때 유용합니다. -all_load 옵션 사용은 linker가 static library의 모든 컨텐트를 병렬적으로 파싱하는 것을 허용하게 합니다.</p>
+
+<p>하지만 만약 동일한 symbol을 구현하는 다수의 static library를 사용하고, static library의 command line order에 의존하는 트릭을 사용할 경우 이 옵션 사용은 적합하지 않습니다. 왜냐하면 linker는 모든 구현을 로드하고, 일반적인 static linking mode에서 발견한 symbol semantic을 반드시 얻는 것이 아니기 때문입니다.</p>
+
+<p>또 다른 단점으로는 사용되지 않는 코드가 프로그램에 들어갈 것이기 때문에 프로그램이 커지게 됩니다. 이를 보안하기 위해 -dead_strip옵션을 사용할 수도 있습니다. 이 옵션은 linker로 하여금 도달 불가능한 코드를 제거하게 합니다. 속도가 빠른 dead stripping 알고리즘을 이용해 output파일의 크기를 줄임으로써 비용의 대가를 스스로 지불하게 하는 것입니다. 만약 -all_load와 -dead_strip 옵션을 사용하고자 한다면 옵션이 추가될 때와 아닐때의 linking time을 비교해보시기 바랍니다.</p>
+
+<p><br /><br /></p>
+
+<h4 id="ref"><em><u>ref.</u></em></h4>
+<p><a href="https://developer.apple.com/videos/play/wwdc2022/110362">Link fast: Improve build and launch times</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#build" class="page__taxonomy-item p-category" rel="tag">build</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#xcode" class="page__taxonomy-item p-category" rel="tag">xcode</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/#build-structure" class="page__taxonomy-item p-category" rel="tag">Build structure</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-06-16T00:00:00+09:00">June 16, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BWWDC%5D+Link+%EC%86%8D%EB%8F%84%EB%A5%BC+%EB%86%92%EC%97%AC%EB%B3%B4%EC%9E%90+%281%29+-+static+link%20https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Flink-fast-1%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Flink-fast-1%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwannagohome.github.io%2F%2Fblog%2Fbuild%2520structure%2Flink-fast-1%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/build%20structure/what_happens_when_xcode_build_start-3/" class="pagination--pager" title="[WWDC] Xcode build를 시작하면 어떤일이 벌어질까? - (3)
+">이전</a>
+    
+    
+      <a href="/blog/build%20structure/link-fast-2/" class="pagination--pager" title="[WWDC] Link 속도를 높여보자 (2) - dynamic link
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/tuist-what-i-learned/" rel="permalink">Tuist를 적용하며 배운것들
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 회사에서 프로젝트에 Tuist를 적용하는 업무를 맡게되었습니다. 그 과정중에 예상치 못한 난관들을 겪게되면서 많은 것들을 배우고 익힐 수 있었는데요. 지금도 휘발되고 있는 기억들을 어떻게든 붙잡아 보고자, Tuist를 적용하는 과정에서 배운 것들과 고민했던 것들을 나열해보고자...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/swift-concurrency-1/" rel="permalink">Swift 동시성 프로그래밍 tutorial - (1)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">매해 발전을 거듭해 오는 Swift이지만, 2021년에는 Swift 5.5에 동시성 프로그래밍을 위한 기능들이 추가되면서 더 큰 발전을 이루어 냈습니다. 바로 async, await, actor가 추가된 것인데요.
+Async/await, Async/Await: Sequences, ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/programming/object-oriented-programming-1/" rel="permalink">객체지향적인 코드란 무엇인가?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">조영호님의 책 객체지향적의 사실과 오해를 읽고 OOP에 대한 많은 영감을 받아 이를 정리한 글 입니다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/xcode/build_app_with_arm64_simulator_without_arm64_simulator_binary/" rel="permalink">arm64-simulator binary가 sdk를 의존할 때 m1 simulator 환경에서 빌드하기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">최근 참여하고 있는 프로젝트의 dependency manager를 cocoapod에서 spm으로 변경하는 작업을 진행하게 되었습니다. 단순하게 pod을 제거하고 swift package로 대체하려 하려 했지만, 몇 가지 문제가 발생하여 이 문제점을 해결해 나가는 과정을 정리해보았습...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Contact:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="iwwuf7@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/wannagohome" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 pete. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
