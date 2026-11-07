@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Jekyll 빌드 산출물 (현재는 .nojekyll 정적 사이트라 쓰지 않음)
+_site/
+.jekyll-cache/
+.sass-cache/
+.jekyll-metadata
+Gemfile.lock
